@@ -1,8 +1,13 @@
-# http-proxy
+package main
 
-```go
+import (
+	"log"
+
+	httpproxy "github.com/alex-eftimie/http-proxy"
+)
+
 func main() {
-	c := &Proxy{
+	c := &httpproxy.Proxy{
 		BindAddr: "0.0.0.0:998",
 		AuthCallback: func(user, pass, ip string) bool {
 			log.Printf("Authenticating %s, %s, %s, %t\n", user, pass, ip, true)
@@ -12,4 +17,3 @@ func main() {
 
 	c.Run()
 }
-```
