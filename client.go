@@ -3,9 +3,9 @@ package httpproxy
 import (
 	"bufio"
 	"encoding/base64"
+	"fmt"
 	"io"
 	"log"
-	"net"
 	"net/http"
 	"strings"
 
@@ -14,15 +14,30 @@ import (
 
 var errorResponse = "HTTP/1.0 400 Bad Request\r\n\r\nSomething went terribly wrong\n"
 var successResponse = "HTTP/1.1 200 OK\r\n\r\n"
-var authReqiredResponse = "HTTP/1.1 407 Proxy Authentication Required\r\nProxy-Authenticate: Basic realm=\"Freedom LOL\"\r\n\r\n\n"
+var authReqiredResponse = "HTTP/1.1 407 Proxy Authentication Required\r\nProxy-Authenticate: Basic realm=\"%s\"\r\n\r\n\n"
 
-// HandleClient Handles all the work for the http(s) proxy
-func (proxy *Proxy) HandleClient(conn net.Conn) {
+type proxyConn struct {
+	*networkhelpers.CounterConn
+	user string
+	ip   string
+}
+
+// HandleClient runs all the logic of a proxy after the connection is established
+func (proxy *Proxy) HandleConn(c io.ReadWriteCloser, ip string) {
 
 	log.Println("New client")
 
-	var auth string
+	cc := networkhelpers.NewCounterConn(c)
+	pc := &proxyConn{cc, "", ip}
+	proxy.handleClient(pc)
 
+	if proxy.BandwidthCallback != nil {
+		proxy.BandwidthCallback(pc.user, pc.ip, pc.Counter.Upstream, pc.Counter.Downstream)
+	}
+}
+
+func (proxy *Proxy) handleClient(conn *proxyConn) {
+	var auth string
 	reader := bufio.NewReader(conn)
 
 	req, err := http.ReadRequest(reader)
@@ -34,9 +49,8 @@ func (proxy *Proxy) HandleClient(conn net.Conn) {
 
 	if proxy.AuthCallback != nil {
 
-		ip := networkhelpers.RemoteAddr(conn)
 		if len(auth) == 0 {
-			io.WriteString(conn, authReqiredResponse)
+			io.WriteString(conn, fmt.Sprintf(authReqiredResponse, proxy.Realm))
 			conn.Close()
 			return
 		}
@@ -54,7 +68,9 @@ func (proxy *Proxy) HandleClient(conn net.Conn) {
 		auth = string(sDec)
 		parts = strings.Split(auth, ":")
 
-		if len(parts) != 2 || false == proxy.AuthCallback(parts[0], parts[1], ip) {
+		conn.user = parts[0]
+
+		if len(parts) != 2 || false == proxy.AuthCallback(parts[0], parts[1], conn.ip) {
 			io.WriteString(conn, authReqiredResponse)
 			conn.Close()
 			return

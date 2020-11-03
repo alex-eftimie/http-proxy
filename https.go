@@ -3,7 +3,6 @@ package httpproxy
 import (
 	"io"
 	"log"
-	"net"
 	"net/http"
 
 	"github.com/fatih/color"
@@ -11,7 +10,7 @@ import (
 	nh "github.com/alex-eftimie/networkhelpers"
 )
 
-func handleTunnel(req *http.Request, conn net.Conn) {
+func handleTunnel(req *http.Request, conn io.ReadWriteCloser) {
 
 	addr := req.Host
 

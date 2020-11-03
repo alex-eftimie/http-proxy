@@ -1,24 +1,32 @@
-package httpproxy
+package main
 
 import (
 	"log"
 	"net"
 	"time"
 
+	httpproxy "github.com/alex-eftimie/http-proxy"
 	"github.com/alex-eftimie/networkhelpers"
 	"github.com/fatih/color"
 )
 
-// Proxy holds the config for a http/https proxy instance
-type Proxy struct {
-	BindAddr          string
-	AuthCallback      func(user, password, ip string) bool
-	BandwidthCallback func(user, ip string, upload, download int64)
-	Realm             string
+func main() {
+	p := &httpproxy.Proxy{
+		Realm:    "My Awesome Proxy Server",
+		BindAddr: "0.0.0.0:998",
+		AuthCallback: func(user, pass, ip string) bool {
+			log.Printf("Authenticating %s, %s, %s, %t\n", user, pass, ip, true)
+			return true
+		},
+		BandwidthCallback: func(user, ip string, upload, download int64) {
+			log.Printf("[BWC] %s(%s) Upload:%d, Download: %d\n", user, ip, upload, download)
+		},
+	}
+
+	Run(p)
 }
 
-func (proxy *Proxy) Run() {
-
+func Run(proxy *httpproxy.Proxy) {
 	l, err := net.Listen("tcp4", proxy.BindAddr)
 	if err != nil {
 		log.Fatalln(err)
@@ -35,7 +43,6 @@ func (proxy *Proxy) Run() {
 				log.Println("clientHandler:", color.RedString(err.Error()))
 				return
 			}
-
 			ip := networkhelpers.RemoteAddr(c)
 			proxy.HandleConn(c, ip)
 		}
@@ -44,5 +51,4 @@ func (proxy *Proxy) Run() {
 	for {
 		time.Sleep(time.Second * 10)
 	}
-
 }
