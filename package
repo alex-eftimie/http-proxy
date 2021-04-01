@@ -1,0 +1,27 @@
+#!/bin/bash -x
+DIR=./app
+rm -Rvf $DIR
+mkdir $DIR
+env GOOS=darwin GOARCH=amd64 go build -o $DIR/http-proxy.mac src/*.go
+env GOOS=linux GOARCH=amd64 go build -o $DIR/http-proxy.linux src/*.go
+
+cp -R docs $DIR/
+mkdir $DIR/cache
+cp -R cache $DIR/
+mv -f $DIR/cache/default_cache.json $DIR/cache/cache.json
+cp -R config $DIR/
+
+# replace my proxy with kocer's
+cat config/config.jsonc | sed 's/"alexeftimie:tTzmG0lgVj5HT7fY@proxy.packetstream.io:31112"/"kocer000:jprng6q3quvtasks@proxy.packetstream.io:31112"/' > $DIR/config/config.jsonc
+
+FILE=proxy-`date +"%Y-%m-%d--%H-%M-%S"`.tar.gz
+tar cvzf $FILE app
+
+# 157.230.234.171
+rsync -avz $FILE root@157.230.234.171:/var/www/html/
+
+echo "Cleaning up..."
+rm -Rvf $DIR
+
+echo http://157.230.234.171/$FILE
+echo Done

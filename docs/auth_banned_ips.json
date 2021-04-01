@@ -1,0 +1,11 @@
+{
+    "AuthToken": "XpMooQlTeYXufEZIINXLTExstWjYpRoHvRClxlQXxClzmlsMmJRgPgvzcEWwCcI",
+    "Type": "IP",
+    "User": "eftimie.alexandru+gmail.com",
+    "Pass": "fAg3E45hG6qV0Y2w1",
+    "IP": {
+        "127.0.0.1": false,
+        "127.0.0.2": false,
+        "8.8.8.8": true
+    }
+}

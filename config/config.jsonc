@@ -1,0 +1,12 @@
+{
+	"AuthToken": "NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf",
+	"DebugLevel": 99,
+	"BindAddr": ":65001",
+	"ServerIP": "127.0.0.1",
+	"BandwidthUpdateInterval": 15,
+	"SessionTimeout": 300, // in seconds
+	"Proxies": [
+		"alexeftimie:tTzmG0lgVj5HT7fY@proxy.packetstream.io:51112"
+	],
+	"ProxyAgent": "My Awesome Proxy"
+}

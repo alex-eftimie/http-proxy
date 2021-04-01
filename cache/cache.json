@@ -1,0 +1,23 @@
+{
+	"AuthToken": "",
+	"ServerPort": 1001,
+	"Servers": [
+		{
+			"ID": "DStQnsRJExLkPbu",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":1000",
+			"Auth": {
+				"AuthToken": "CdtLYDMoQzEVtpfwLneQifcbNbshUkZsMAEubZQFwdKMoJMpqTAbqwbIYEYXPoH",
+				"Type": "UserPass",
+				"User": "eftimie.alexandru+gmail.com",
+				"Pass": "x4hCFcg9608wEb3X",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.00 GB"
+			},
+			"MaxThreads": 15
+		}
+	]
+}
