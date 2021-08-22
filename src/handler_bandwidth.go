@@ -69,9 +69,9 @@ func putBandwidth(w http.ResponseWriter, r *http.Request) {
 	var nb *PrettyByte = nil
 	if disableBW {
 		s.parent.Lock()
-		s.mux.Lock()
+		s.Lock()
 		s.Bytes = nil
-		s.mux.Unlock()
+		s.Unlock()
 		s.parent.Unlock()
 	} else {
 		extra, err := bytesize.Parse([]byte(pb.Readable))
@@ -82,7 +82,7 @@ func putBandwidth(w http.ResponseWriter, r *http.Request) {
 		}
 
 		s.parent.Lock()
-		s.mux.Lock()
+		s.Lock()
 
 		if add && s.Bytes != nil {
 			extra += bytesize.ByteSize(s.Bytes.Value)
@@ -94,7 +94,7 @@ func putBandwidth(w http.ResponseWriter, r *http.Request) {
 		s.Bytes = nb
 
 		s.SyncBandwidth()
-		s.mux.Unlock()
+		s.Unlock()
 		s.parent.Unlock()
 
 	}

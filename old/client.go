@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/alex-eftimie/networkhelpers"
+	"github.com/Alex-Eftimie/netutils"
 )
 
 var errorResponse = "HTTP/1.0 400 Bad Request\r\n\r\nSomething went terribly wrong\n"
@@ -17,7 +17,7 @@ var successResponse = "HTTP/1.1 200 OK\r\n\r\n"
 var authReqiredResponse = "HTTP/1.1 407 Proxy Authentication Required\r\nProxy-Authenticate: Basic realm=\"%s\"\r\n\r\n\n"
 
 type proxyConn struct {
-	*networkhelpers.CounterConn
+	*netutils.CounterConn
 	user string
 	ip   string
 }
@@ -27,7 +27,7 @@ func (proxy *Proxy) HandleConn(c io.ReadWriteCloser, ip string) {
 
 	log.Println("New client")
 
-	cc := networkhelpers.NewCounterConn(c)
+	cc := netutils.NewCounterConn(c)
 	pc := &proxyConn{cc, "", ip}
 	proxy.handleClient(pc)
 

@@ -5,8 +5,8 @@ import (
 	"net"
 	"time"
 
-	httpproxy "github.com/alex-eftimie/http-proxy"
-	"github.com/alex-eftimie/networkhelpers"
+	httpproxy "github.com/Alex-Eftimie/http-proxy"
+	"github.com/Alex-Eftimie/networkhelpers"
 	"github.com/fatih/color"
 )
 

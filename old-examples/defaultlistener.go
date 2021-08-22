@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	hf "github.com/alex-eftimie/http-forwarder"
-	httpproxy "github.com/alex-eftimie/http-proxy"
-	tf "github.com/alex-eftimie/tcp-forwarder"
+	hf "github.com/Alex-Eftimie/http-forwarder"
+	httpproxy "github.com/Alex-Eftimie/http-proxy"
+	tf "github.com/Alex-Eftimie/tcp-forwarder"
 )
 
 func main() {

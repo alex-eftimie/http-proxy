@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"regexp"
@@ -58,8 +59,17 @@ func putAuth(w http.ResponseWriter, r *http.Request) {
 		newAuth.Type = AuthTypeUserPass
 	}
 
+	if s.MaxIPs != nil {
+		newAuth.Type = AuthTypeIP
+		if len(newAuth.IP) > *s.MaxIPs {
+			w.Header().Set("X-Error", fmt.Sprintf("MaxIPs is %d", *s.MaxIPs))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+	}
+
 	s.parent.Lock()
-	s.mux.Lock()
+	s.Lock()
 
 	if newAuth.AuthToken != s.Auth.AuthToken {
 		if !x.Admin {
@@ -78,7 +88,7 @@ func putAuth(w http.ResponseWriter, r *http.Request) {
 	s.Auth = *newAuth
 
 	s.SyncBandwidth()
-	s.mux.Unlock()
+	s.Unlock()
 	s.parent.Unlock()
 
 	w.Header().Add("X-Success", "true")

@@ -12,7 +12,7 @@ mv -f $DIR/cache/default_cache.json $DIR/cache/cache.json
 cp -R config $DIR/
 
 # replace my proxy with kocer's
-cat config/config.jsonc | sed 's/"alexeftimie:tTzmG0lgVj5HT7fY@proxy.packetstream.io:31112"/"kocer000:jprng6q3quvtasks@proxy.packetstream.io:31112"/' > $DIR/config/config.jsonc
+cat config/config.jsonc | sed 's/"alexeftimie:tTzmG0lgVj5HT7fY"/"user:pass"/' > $DIR/config/config.jsonc
 
 FILE=proxy-`date +"%Y-%m-%d--%H-%M-%S"`.tar.gz
 tar cvzf $FILE app

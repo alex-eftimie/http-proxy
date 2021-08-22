@@ -7,34 +7,57 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	apicontroller "github.com/Alex-Eftimie/api-controller"
 	"github.com/sethvargo/go-password/password"
 )
 
 type apiCreateServer struct {
-	AuthToken string
-	Email     string
-	Username  string
-	Password  string
-	Host      string
-	Port      int
-	ID        string
-	Bandwidth *string
+	AuthToken  string
+	Email      string
+	Username   string
+	Password   string
+	Host       string
+	Port       int
+	ID         string
+	Bandwidth  *string
+	MaxThreads *int
+	MaxIPs     *int
+	Time       *Duration
+	ExpireAt   *PTime
 }
 
 func manageServers() {
 	C.AddHandler("/server", putServer, "PUT")
+	C.AddHandler("/server", getAllServers, "GET")
 	C.AddHandler("/server/{serverID:[a-zA-Z0-9]+}", getServer, "GET")
 	C.AddHandler("/server/{serverID:[a-zA-Z0-9]+}", deleteServer, "DELETE")
 }
 
+func getAllServers(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	x, _ := ctx.Value(apicontroller.KeyAuthID).(*APIAuth)
+
+	if !x.Admin {
+		w.Header().Set("X-Error", "Clients are not allowed to do that")
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
+	Ca.Lock()
+	bytes, _ := json.Marshal(Ca.Servers)
+	Ca.Unlock()
+
+	w.Header().Add("Content-Type", "application/json")
+	w.Write(bytes)
+
+}
 func getServer(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	x, _ := ctx.Value(apicontroller.KeyAuthID).(*APIAuth)
-	x.Server.mux.Lock()
+	x.Server.Lock()
 	bytes, _ := json.Marshal(x.Server)
-	x.Server.mux.Unlock()
+	x.Server.Unlock()
 	w.Header().Add("Content-Type", "application/json")
 	w.Write(bytes)
 }
@@ -92,12 +115,24 @@ func putServer(w http.ResponseWriter, r *http.Request) {
 			Readable: *u.Bandwidth,
 		}
 	}
+	var expireAt *PTime = nil
+	if u.Time != nil {
 
-	Ca.Mutex.Lock()
+		expireAt = &PTime{time.Now().Add(u.Time.Duration)}
+		u.ExpireAt = expireAt
+	}
+	Ca.Lock()
 
 	u.Host = Co.ServerIP
 	u.Port = Ca.ServerPort
 	Ca.ServerPort++
+	typ := "UserPass"
+
+	if u.MaxIPs != nil {
+		typ = "IP"
+		u.Username = ""
+		u.Password = ""
+	}
 
 	server := Server{
 		ID:     u.ID,
@@ -105,13 +140,16 @@ func putServer(w http.ResponseWriter, r *http.Request) {
 		Addr:   fmt.Sprintf(":%d", u.Port),
 		Auth: Auth{
 			AuthToken: u.AuthToken,
-			Type:      "UserPass",
+			Type:      typ,
 			User:      u.Username,
 			Pass:      u.Password,
 		},
-		Bytes: bw,
+		Bytes:      bw,
+		MaxThreads: u.MaxThreads,
+		MaxIPs:     u.MaxIPs,
+		ExpireAt:   expireAt,
 	}
-	Ca.Mutex.Unlock()
+	Ca.Unlock()
 
 	if err := RunServer(&server); err == nil {
 		Ca.Lock()
@@ -141,7 +179,7 @@ func deleteServer(w http.ResponseWriter, r *http.Request) {
 	s := x.Server
 	log.Println("Deleting server", s.ID, s.Addr)
 
-	s.Server.Close()
+	s.Close()
 	Ca.Lock()
 
 	// delete from

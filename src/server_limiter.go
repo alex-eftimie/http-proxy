@@ -2,6 +2,8 @@ package main
 
 import (
 	"sync"
+
+	"github.com/Alex-Eftimie/utils"
 )
 
 // ServerLimiter performs connections / thread limiting
@@ -49,6 +51,7 @@ func (sl *ServerLimiter) Current() int {
 
 // SetMax updates the max
 func (sl *ServerLimiter) SetMax(max *int) {
+	utils.Debugf(999, "ServerLimiter SetMax: %d", max)
 	sl.m.Lock()
 	defer sl.m.Unlock()
 	sl.max = max

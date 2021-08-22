@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"sync"
 	"time"
 )
@@ -15,21 +14,15 @@ type SessionManager struct {
 }
 
 type hp struct {
-	hp      *HTTPProxy
+	hp      *ProxyInfo
 	timeout time.Time
 }
 
 func init() {
 	SessionTimeout = Co.SessionTimeout
-	go func() {
-		for {
-			time.Sleep(5 * time.Second)
-			log.Println("Sessions:", len(SessionMaster.Sessions))
-		}
-	}()
 }
 
-func (sm *SessionManager) GetSession(key string) *HTTPProxy {
+func (sm *SessionManager) GetSession(key string) *ProxyInfo {
 	sm.Lock()
 	defer sm.Unlock()
 
@@ -41,7 +34,7 @@ func (sm *SessionManager) GetSession(key string) *HTTPProxy {
 	return nil
 }
 
-func (sm *SessionManager) SetSession(key string, p *HTTPProxy) {
+func (sm *SessionManager) SetSession(key string, p *ProxyInfo) {
 	sm.Lock()
 	defer sm.Unlock()
 

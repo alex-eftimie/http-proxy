@@ -63,13 +63,13 @@ func putThreads(w http.ResponseWriter, r *http.Request) {
 	}
 
 	s.parent.Lock()
-	s.mux.Lock()
+	s.Lock()
 
 	s.MaxThreads = newCon.MaxThreads
 	s.limiter.SetMax(newCon.MaxThreads)
 	newCon.CurrentThreads = s.limiter.Current()
 
-	s.mux.Unlock()
+	s.Unlock()
 	s.parent.Unlock()
 
 	w.Header().Add("X-Success", "true")

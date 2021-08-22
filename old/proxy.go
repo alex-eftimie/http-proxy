@@ -5,8 +5,8 @@ import (
 	"net"
 	"time"
 
-	"github.com/alex-eftimie/networkhelpers"
-	tf "github.com/alex-eftimie/tcp-forwarder"
+	"github.com/Alex-Eftimie/networkhelpers"
+	tf "github.com/Alex-Eftimie/tcp-forwarder"
 	"github.com/fatih/color"
 )
 

@@ -1,6 +1,6 @@
 # Add new server
 ```bash
-    curl -i -H "Authorization: Bearer NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf" -X PUT -H "Content-Type: application/json" --data @server.json http://127.0.0.1:65001/server
+        curl -i -H "Authorization: Bearer NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf" -X PUT -H "Content-Type: application/json" --data @server.json http://127.0.0.1:65001/server
 ```
 
 
@@ -67,7 +67,7 @@ bytes.json:
 # Increase Bandwidth to Server
 Add ?add=true
 ```bash
-    curl -i -H "Authorization: Bearer NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf" -X PUT -H "Content-Type: application/json" --data @bytes.json http://127.0.0.1:65001/bandwidth/DStQnsRJExLkPbu\?add\=true
+    curl -i -H "Authorization: Bearer NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf" -X PUT -H "Content-Type: application/json" --data @bytes.json http://127.0.0.1:65001/bandwidth/WDlyeoxKtfNzeRl\?add\=true
 ```
 
 # Disable Bandwidth to Server
@@ -76,7 +76,31 @@ Add ?add=true
 ```
 
 
-# Get Server Threads
+# Set Time to server ( Absolute Value )
+```bash
+    curl -i -H "Authorization: Bearer NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf" -X PUT -H "Content-Type: application/json" --data @bytes.json http://127.0.0.1:65001/time/DStQnsRJExLkPbu
+```
+
+bytes.json:
+```json
+        {
+            "Readable": "10.00 GB"
+        }
+```
+
+# Increase Time to Server
+Add ?add=true
+```bash
+    curl -i -H "Authorization: Bearer NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf" -X PUT -H "Content-Type: application/json" --data @bytes.json http://127.0.0.1:65001/time/WDlyeoxKtfNzeRl\?add\=true
+```
+
+# Disable Time to Server
+```bash
+    curl -i -H "Authorization: Bearer NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf" -X PUT -H "Content-Type: application/json" --data '{}' http://127.0.0.1:65001/time/DStQnsRJExLkPbu
+```
+
+
+# Get Server    
 ```bash
     curl -i -H "Authorization: Bearer NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf" http://127.0.0.1:65001/threads/DStQnsRJExLkPbu
 ```
@@ -103,7 +127,7 @@ auth.json with IP Authentication:
 ```json
     {
         "AuthToken": "XpMooQlTeYXufEZIINXLTExstWjYpRoHvRClxlQXxClzmlsMmJRgPgvzcEWwCcI",
-        "Type": "IP",
+        "   ": "IP",
         "User": "eftimie.alexandru+gmail.com",
         "Pass": "fAg3E45hG6qV0Y2w1",
         "IP": {

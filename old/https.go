@@ -7,7 +7,7 @@ import (
 
 	"github.com/fatih/color"
 
-	nh "github.com/alex-eftimie/networkhelpers"
+	nh "github.com/Alex-Eftimie/networkhelpers"
 )
 
 func (proxy *Proxy) handleTunnel(req *http.Request, conn io.ReadWriteCloser) {

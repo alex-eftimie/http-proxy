@@ -20,6 +20,7 @@ type APIAuth struct {
 func addHandlers() {
 	manageServers()
 	manageBandwidth()
+	manageTime()
 	manageAuth()
 	manageThreads()
 }

@@ -25,23 +25,29 @@ type ProxyGroup struct {
 
 // ProxyModify holds the new format for modifications for user and pass
 type ProxyModify struct {
-	User *string
-	Pass *string
+	User  *string
+	Pass  *string
+	Group *string
 }
 
 func init() {
 	G = &Groups{
 		Configuration: *apiconfig.NewConfig("./config/groups.jsonc"),
 	}
-	G.LoadConfig(G)
+	apiconfig.LoadConfig(G)
 }
 
 // ParseProxyParams receives a map of the _key-value pairs passed by client and
 // runs all the modifications
-func ParseProxyParams(mp *map[string]string) {
+func ParseProxyParams(mp *map[string]string, onlyGroup bool) {
 	m := *mp
 	for trigger, value := range m {
 		if grp, ok := G.Modifiers[trigger]; ok {
+
+			// first pass only needs to set group
+			if onlyGroup && grp.Modify.Group == nil {
+				continue
+			}
 
 			if v, ok := grp.Map[value]; ok {
 				m[trigger] = v
@@ -51,6 +57,9 @@ func ParseProxyParams(mp *map[string]string) {
 			}
 			if grp.Modify.Pass != nil {
 				m["Pass"] = Replacer(*grp.Modify.Pass, m)
+			}
+			if grp.Modify.Group != nil {
+				m["Group"] = Replacer(*grp.Modify.Group, m)
 			}
 		}
 	}

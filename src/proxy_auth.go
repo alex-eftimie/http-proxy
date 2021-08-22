@@ -4,18 +4,14 @@ import (
 	"encoding/base64"
 	"net/http"
 	"strings"
-)
 
-// UserInfo is a simple User, Pass struct
-type UserInfo struct {
-	User string
-	Pass string
-}
+	"github.com/Alex-Eftimie/netutils"
+)
 
 // GetAuth decodes the Proxy-Authorization header
 // @param *http.Request
 // @returns *UserInfo
-func GetAuth(r *http.Request) *UserInfo {
+func GetAuth(r *http.Request) *netutils.UserInfo {
 	s := r.Header.Get("Proxy-Authorization")
 	if s == "" {
 		return nil
@@ -29,14 +25,14 @@ func GetAuth(r *http.Request) *UserInfo {
 		return nil
 	}
 	ss = strings.Split(string(b), ":")
-	return &UserInfo{
+	return &netutils.UserInfo{
 		User: ss[0],
 		Pass: ss[1],
 	}
 }
 
 // CheckUser Checks that User, Pass supplied in Proxy-Authorization (ui) matches the server (au)
-func CheckUser(ui *UserInfo, au Auth) bool {
+func CheckUser(ui *netutils.UserInfo, au Auth) bool {
 	if ui.User != au.User {
 		return false
 	}
