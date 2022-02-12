@@ -18,7 +18,7 @@ type hp struct {
 	timeout time.Time
 }
 
-func init() {
+func loadSessions() {
 	SessionTimeout = Co.SessionTimeout
 }
 
@@ -28,7 +28,10 @@ func (sm *SessionManager) GetSession(key string) *ProxyInfo {
 
 	if v, ok := sm.Sessions[key]; ok {
 		v.timeout = time.Now().Add(SessionTimeout)
-		return v.hp
+
+		// clone it so we can change it
+		pn := v.hp.Clone()
+		return pn
 	}
 
 	return nil

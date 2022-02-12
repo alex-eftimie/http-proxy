@@ -4,15 +4,17 @@ import (
 	"bufio"
 	"bytes"
 	"context"
-	"encoding/base64"
+	"crypto/tls"
+	"fmt"
 	"io/ioutil"
+	"log"
 	"net"
 	"net/http"
 	"strings"
 	"time"
 
-	"github.com/Alex-Eftimie/netutils"
-	"github.com/Alex-Eftimie/utils"
+	"github.com/alex-eftimie/netutils"
+	"github.com/alex-eftimie/utils"
 	"github.com/soheilhy/cmux"
 )
 
@@ -46,6 +48,11 @@ func (c *CustomHTTPReq) httpError(msg string, status int) {
 		Body:       ioutil.NopCloser(bytes.NewBufferString("")),
 		Header:     make(http.Header),
 	}
+
+	if status == http.StatusProxyAuthRequired {
+		resp.Header.Add("Proxy-Authenticate", fmt.Sprintf("Basic realm=\"%s\"", Co.ProxyAgent))
+	}
+
 	resp.Header.Add("X-Error", msg)
 	resp.Write(c.Conn)
 	c.Conn.Close()
@@ -53,7 +60,7 @@ func (c *CustomHTTPReq) httpError(msg string, status int) {
 }
 func (cs *CustomHTTPServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
-	utils.Debugf(999, "[HTTP](%s) m: %s, h: %s", cs.parent.Addr, r.Method, r.Host)
+	utils.Debugf(999, "[HTTP](%s) m: %s, h: %s, r: %s", cs.parent.Addr, r.Method, r.Host, r.RemoteAddr)
 	// hijack the HTTP Connection
 	hijacker, ok := w.(http.Hijacker)
 	if !ok {
@@ -89,7 +96,7 @@ func (cs *CustomHTTPServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("X-Proxy-Agent", Co.ProxyAgent)
 
-	uinfo := GetAuth(r)
+	uinfo := netutils.GetAuth(r)
 	m := make(map[string]string)
 
 	if uinfo == nil {
@@ -119,28 +126,48 @@ func (cs *CustomHTTPServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ip := strings.Split(r.RemoteAddr, ":")[0]
 
 	if err := cs.parent.CheckAuth(uinfo, ip); err != nil {
-		conn.httpError(err.Error(), http.StatusUnauthorized)
+		conn.httpError(err.Error(), http.StatusProxyAuthRequired)
 		return
 	}
-
-	proxy, err := cs.parent.SelectProxy(uinfo, m)
-
-	if proxy == nil || err != nil {
-		conn.httpError("Proxy Offline", http.StatusBadGateway)
-		return
-	}
-
 	upstreamHost, upstreamPort := netutils.GetHostPort(r)
-
-	tunnel, err := proxy.GetTunnel(upstreamHost, upstreamPort)
-
-	if err != nil || tunnel == nil {
+	// spew.Dump(upstreamHost, upstreamPort)
+	// color.Green("%s:%d", upstreamHost, upstreamPort)
+	// r.WriteProxy(os.Stderr)
+	tunnel, _, err := cs.parent.GetProxyAndTunnel(uinfo, m, upstreamHost, upstreamPort)
+	if err != nil {
+		conn.httpError("Could not establish tunnel", http.StatusBadGateway)
+		utils.Debugf(999, "[HTTP](%s) e: %s, m: %s, h: %s, r: %s", cs.parent.Addr, err.Error(), r.Method, r.Host, r.RemoteAddr)
+		return
+	}
+	if tunnel == nil {
 		conn.httpError("Proxy Unreachable", http.StatusBadGateway)
-		utils.Debugf(999, "[HTTP](%s): Proxy Destination: %s", r.RemoteAddr, proxy.Addr())
 		return
 	}
 
-	defer cs.parent.RunAccountant("HTTP", clientConn.(*cmux.MuxConn).Conn, tunnel)
+	var dc *netutils.CounterConn
+	ac, isAccountable := clientConn.(Accountable)
+	if !isAccountable {
+		if mc, ok := clientConn.(*cmux.MuxConn); ok {
+			dc = mc.Conn.(*netutils.CounterConn)
+		} else {
+			log.Fatalln("Not Accountable connection")
+		}
+	} else {
+		dc = ac.GetCounterConn()
+	}
+
+	if Co.DebugLevel > 99 {
+		defer func() {
+			// if the accountant did not run, report it
+			uc := tunnel.(*netutils.CounterConn)
+
+			if uc.Downstream != -1 || dc.Downstream != -1 {
+				reportError(fmt.Sprintf("Accountant did not run on connection : %d : %d", uc.Downstream, dc.Downstream))
+			}
+		}()
+	}
+
+	defer cs.parent.RunAccountant("HTTP", dc, tunnel)
 
 	if r.Method == "CONNECT" {
 		resp := http.Response{
@@ -158,24 +185,38 @@ func (cs *CustomHTTPServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		resp.Body.Close()
 		resp.Write(clientConn)
 
-		cs.parent.RunPiper(clientConn, tunnel)
+		// cs.parent.RunPiper(clientConn, tunnel)
+		ctx := context.Background()
+		ctx = context.WithValue(ctx, netutils.ContextKeyPipeTimeout, time.Duration(Co.ReadWriteTimeout)*time.Second)
+		netutils.RunPiper(ctx, clientConn, tunnel)
 
 	} else { // GET, POST, OPTIONS, etc...
 		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 		defer cancel()
 		nr := r.Clone(ctx)
 
-		if len(proxy.User) != 0 || len(proxy.Pass) != 0 {
-			basicAuth := "Basic " + base64.StdEncoding.EncodeToString([]byte(proxy.Auth()))
-			nr.Header.Set("Proxy-Authorization", basicAuth)
-		} else {
-			nr.Header.Del("Proxy-Authorization")
-		}
+		// if len(proxy.User) != 0 || len(proxy.Pass) != 0 {
+		// 	basicAuth := "Basic " + base64.StdEncoding.EncodeToString([]byte(proxy.Auth()))
+		// 	nr.Header.Set("Proxy-Authorization", basicAuth)
+		// } else {
+		nr.Header.Del("Proxy-Authorization")
+		// }
 
+		if nr.URL.Scheme == "https" {
+			counterConn := tunnel
+			config := &tls.Config{InsecureSkipVerify: true}
+			tunnel = tls.Client(tunnel, config)
+
+			// this must run before the accountant so we can get the total bytes read
+			defer func() {
+				tunnel = counterConn
+			}()
+		}
 		reader := bufio.NewReader(tunnel)
 
-		// Write the Request to the Upstream Proxy
-		nr.WriteProxy(tunnel)
+		// Write the Request to the Upstream Server, we're already connected using CONNECT protocol
+		// and if https is required, we've already set that up
+		nr.Write(tunnel)
 
 		resp, err := http.ReadResponse(reader, nr)
 		if err != nil {

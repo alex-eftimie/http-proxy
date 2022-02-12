@@ -78,20 +78,20 @@ Add ?add=true
 
 # Set Time to server ( Absolute Value )
 ```bash
-    curl -i -H "Authorization: Bearer NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf" -X PUT -H "Content-Type: application/json" --data @bytes.json http://127.0.0.1:65001/time/DStQnsRJExLkPbu
+    curl -i -H "Authorization: Bearer NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf" -X PUT -H "Content-Type: application/json" --data @time.json http://127.0.0.1:65001/time/DStQnsRJExLkPbu
 ```
 
-bytes.json:
+time.json:
 ```json
         {
-            "Readable": "10.00 GB"
+            "Time": "10h"
         }
 ```
 
 # Increase Time to Server
 Add ?add=true
 ```bash
-    curl -i -H "Authorization: Bearer NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf" -X PUT -H "Content-Type: application/json" --data @bytes.json http://127.0.0.1:65001/time/WDlyeoxKtfNzeRl\?add\=true
+    curl -i -H "Authorization: Bearer NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf" -X PUT -H "Content-Type: application/json" --data @time.json http://127.0.0.1:65001/time/WDlyeoxKtfNzeRl\?add\=true
 ```
 
 # Disable Time to Server
@@ -172,4 +172,14 @@ auth_banned_ips.json with IP Authentication and blocked IPs:
             "8.8.8.8": true
         }
     }
+```
+
+# Get Server Default Group
+```bash
+    curl -i -H "Authorization: Bearer NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf" http://127.0.0.1:65001/group/DStQnsRJExLkPbu
+```
+
+# Change Server Default Group
+```bash
+    curl -i -H "Authorization: Bearer NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf" -X PUT -H "Content-Type: application/json" --data @group.json http://127.0.0.1:65001/group/DStQnsRJExLkPbu
 ```

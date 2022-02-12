@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	apicontroller "github.com/Alex-Eftimie/api-controller"
+	apicontroller "github.com/alex-eftimie/api-controller"
 )
 
 type con struct {

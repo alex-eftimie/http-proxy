@@ -3,14 +3,13 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
-	apiconfig "github.com/Alex-Eftimie/api-config"
+	apiconfig "github.com/alex-eftimie/api-config"
 )
 
 var flagFilter Filter
@@ -20,6 +19,10 @@ var sortKey = flag.String("sort", "connections", "The key to sort logs by\nPossi
 var flagHuman = flag.Bool("h", false, "Human readable format")
 
 func main() {
+	os.Setenv("TZ", "UTC")
+	loadConfig()
+	loadLogger()
+	loadSessions()
 	flag.Var(&flagFilter, "filter", "The filter to run against the logs sorting")
 	flag.Parse()
 
@@ -37,12 +40,16 @@ func main() {
 	initDynamic()
 
 	//
-	go runJugglerClient()
+	// go runJugglerClient()
 
 	log.Println("Running servers")
 	for _, server := range Ca.Servers {
-		RunServer(server)
+		err := RunServer(server)
+		if err != nil {
+			log.Fatalln("RunServer Error", err)
+		}
 	}
+	event("ServersStarted")
 
 	quit := BandwidthMonitor()
 	sigs := make(chan os.Signal, 1)
@@ -54,14 +61,15 @@ func main() {
 				time.Sleep(10 * time.Second)
 				log.Fatalln("Shutdown failed to finish in a timely maner")
 			}()
-			fmt.Println("\nInitializing shutdown sequence")
+			log.Println("\nInitializing shutdown sequence")
 			quit <- true
 			CloseServers()
 			// Ca.Sync()
-			fmt.Println("Flushing changes to disk")
+			log.Println("Syncing cache")
 			apiconfig.Sync(Ca)
+			event("ServersStopped")
 
-			fmt.Println("Finished shutdown sequence")
+			log.Println("Finished shutdown sequence")
 			os.Exit(0)
 		}
 	}()

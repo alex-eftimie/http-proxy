@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	apicontroller "github.com/Alex-Eftimie/api-controller"
+	apicontroller "github.com/alex-eftimie/api-controller"
 	"github.com/shenwei356/util/bytesize"
 )
 

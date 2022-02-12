@@ -1,14 +1,16 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net"
 	"strings"
+	"time"
 
-	"github.com/Alex-Eftimie/netutils"
-	"github.com/Alex-Eftimie/socks5"
-	"github.com/Alex-Eftimie/utils"
+	"github.com/alex-eftimie/netutils"
+	"github.com/alex-eftimie/socks5"
+	"github.com/alex-eftimie/utils"
 	"github.com/soheilhy/cmux"
 )
 
@@ -73,6 +75,7 @@ func (cs *CustomSocks5Server) TunnelHandler(uinfo *netutils.UserInfo, ip string,
 		reason = strings.Replace(reason, " ", "-", -1)
 		reason = reason + ".status"
 		sc(reason, socks5.StatusConnectionNotAllowedByRuleset)
+		return
 	}
 
 	if cs.parent.IsExpired() {
@@ -93,27 +96,34 @@ func (cs *CustomSocks5Server) TunnelHandler(uinfo *netutils.UserInfo, ip string,
 	}
 	defer cs.parent.limiter.Done()
 
-	proxy, err := cs.parent.SelectProxy(uinfo, m)
-
-	if proxy == nil || err != nil {
-		sc("proxy-offline.status", socks5.StatusNetworkUnreachable)
-		debugf(99, "[Socks](%s) proxy-offline: %s", cs.parent.Addr, err)
-		return
-	}
-
-	tunnel, err := proxy.GetTunnel(upstreamHost, upstreamPort)
+	// upstreamHost, upstreamPort := netutils.GetHostPort(r)
+	tunnel, proxy, err := cs.parent.GetProxyAndTunnel(uinfo, m, upstreamHost, upstreamPort)
 
 	if err != nil || tunnel == nil {
 		debugf(99, "[Socks](%s) proxy: [%s]%s, proxy-unreachable: %s", cs.parent.Addr, proxy.Type, proxy.Addr(), err)
 		sc("proxy-unreachable.status", socks5.StatusNetworkUnreachable)
 		return
 	}
+	// if Co.DebugLevel > 99 {
+	// 	defer func() {
+	// 		// if the accountant did not run, report it
+	// 		uc := tunnel.(*netutils.CounterConn)
+
+	// 		dc := c.(*netutils.CounterConn)
+
+	// 		if uc.Downstream != -1 || dc.Downstream != -1 {
+	// 			reportError(fmt.Sprintf("Accountant did not run on connection : %d : %d", uc.Downstream, dc.Downstream))
+	// 		}
+	// 	}()
+	// }
 
 	defer cs.parent.RunAccountant("SOCKS5", c, tunnel)
 
 	sc("succeeded.status", socks5.StatusSucceeded)
 
-	cs.parent.RunPiper(c, tunnel)
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, netutils.ContextKeyPipeTimeout, time.Duration(Co.ReadWriteTimeout)*time.Second)
+	netutils.RunPiper(ctx, c, tunnel)
 
 	return
 }

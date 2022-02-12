@@ -5,6 +5,13 @@
 *.so
 *.dylib
 
+
+# Skip any packaged files
+*.tar.gz
+
+# Skip any log files
+logs
+
 # Test binary, built with `go test -c`
 *.test
 

@@ -3,8 +3,9 @@ package main
 import (
 	"fmt"
 	"strings"
+	"sync"
 
-	apiconfig "github.com/Alex-Eftimie/api-config"
+	apiconfig "github.com/alex-eftimie/api-config"
 )
 
 // G holds all the modifier groups
@@ -32,7 +33,12 @@ type ProxyModify struct {
 
 func init() {
 	G = &Groups{
-		Configuration: *apiconfig.NewConfig("./config/groups.jsonc"),
+		// Configuration: *apiconfig.NewConfig("./config/groups.jsonc"),
+		Configuration: apiconfig.Configuration{
+			Mutex: &sync.Mutex{},
+			Group:  "data",
+			Item: "groups",
+		},
 	}
 	apiconfig.LoadConfig(G)
 }

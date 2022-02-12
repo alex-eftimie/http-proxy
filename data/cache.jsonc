@@ -1,0 +1,1612 @@
+{
+	"Group": "data",
+	"Item": "cache",
+	"ServerPort": 2109,
+	"Servers": [
+		{
+			"ID": "BCkuElDFzjLbOji",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":1338",
+			"Auth": {
+				"AuthToken": "XpMooQlTeYXufEZIINXLTExstWjYpRoHvRClxlQXxClzmlsMmJRgPgvzcEWwCcI",
+				"Type": "IP",
+				"User": "eftimie.alexandru+gmail.com",
+				"Pass": "fAg3E45hG6qV0Y2w1",
+				"IP": {
+					"127.0.0.3": false,
+					"127.0.0.4": false,
+					"192.168.1.128": true,
+					"8.8.8.1": true
+				}
+			},
+			"Bytes": {
+				"Value": 107357012931198,
+				"Readable": "97.64 TB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"BWUsageHistory": {
+				"2021-08-21T00:00:00+03:00": {
+					"U": 464,
+					"D": 331
+				},
+				"2021-08-22T00:00:00+03:00": {
+					"U": 5868,
+					"D": 31115
+				},
+				"2021-09-25T00:00:00+03:00": {
+					"U": 5698,
+					"D": 41902
+				}
+			}
+		},
+		{
+			"ID": "WHHZTsQQZvhikWO",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":1337",
+			"Auth": {
+				"AuthToken": "vvuQjsUHLIlGSMsYyZiNNbZbBWdMgsSZxgYAOYZfqoWqzNdWKtNZUBUzVFrDtRi",
+				"Type": "IP",
+				"User": "alex",
+				"Pass": "pass",
+				"IP": {
+					"1.1.1.1": true,
+					"127.0.0.1": true
+				}
+			},
+			"Bytes": {
+				"Value": 375492895932,
+				"Readable": "349.71 GB"
+			},
+			"MaxThreads": 100,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"BWUsageHistory": {
+				"2021-09-21T00:00:00+03:00": {
+					"U": 4701441,
+					"D": 53597218
+				},
+				"2021-09-25T00:00:00+03:00": {
+					"U": 529211,
+					"D": 127554568
+				},
+				"2021-10-07T00:00:00+03:00": {
+					"U": 688129,
+					"D": 4494435
+				},
+				"2021-10-20T00:00:00+03:00": {
+					"U": 7938,
+					"D": 22391
+				},
+				"2021-10-21T00:00:00+03:00": {
+					"U": 15095,
+					"D": 8027
+				},
+				"2021-10-22T00:00:00+03:00": {
+					"U": 1429,
+					"D": 7170
+				},
+				"2021-10-24T00:00:00+03:00": {
+					"U": 31440,
+					"D": 10487
+				},
+				"2021-10-25T00:00:00+03:00": {
+					"U": 27428770245,
+					"D": 607770168
+				},
+				"2021-10-26T00:00:00+03:00": {
+					"U": 522181000,
+					"D": 249183000
+				},
+				"2021-10-29T00:00:00+03:00": {
+					"U": 4475548000,
+					"D": 6226935000
+				},
+				"2021-11-01T00:00:00+02:00": {
+					"U": 10810800000,
+					"D": 9240110000
+				},
+				"2021-11-02T00:00:00+02:00": {
+					"U": 204864000,
+					"D": 176352000
+				},
+				"2021-11-06T00:00:00+02:00": {
+					"U": 32714000,
+					"D": 46475000
+				},
+				"2021-11-18T00:00:00+02:00": {
+					"U": 498465000,
+					"D": 256652000
+				},
+				"2021-11-20T00:00:00+02:00": {
+					"U": 135718000,
+					"D": 62436000
+				}
+			}
+		},
+		{
+			"ID": "vStMXNUIoLaCFxC",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":10010",
+			"Auth": {
+				"AuthToken": "hBBCVjepxJbQifyBIAZPnIMWpNstEWWZaobuboDanarCcwMFlRmzmQqtkyJXlpX",
+				"Type": "UserPass",
+				"User": "eftimie.alexandru+gmail.com",
+				"Pass": "mypassword",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 1099511627776,
+				"Readable": "1.00 TB"
+			},
+			"MaxThreads": 100,
+			"MaxIPs": null,
+			"ExpireAt": "2021-10-05 16:35:41"
+		},
+		{
+			"ID": "oEYZZneRRPQOvpv",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":10011",
+			"Auth": {
+				"AuthToken": "iTIhwncQRQBeUkMsidEQFwrGhpuIWsuMHCoUdhaYdandvZmKFjnYgqKjyyjGhYj",
+				"Type": "UserPass",
+				"User": "eftimie.alexandru+gmail.com",
+				"Pass": "mypassword",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": null,
+			"ExpireAt": "2021-11-08 19:36:40"
+		},
+		{
+			"ID": "vifOHGrtwjjkCWj",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":10012",
+			"Auth": {
+				"AuthToken": "iBQHKNTARlvqqVoYvWBLKgWVASiYISIDcStNMeeGDcGChetTFqVEbbDUiwGqaNq",
+				"Type": "UserPass",
+				"User": "eftimie.alexandru+gmail.com",
+				"Pass": "mypassword",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 21474836480,
+				"Readable": "20.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "LMqKTPpKBMpDyHN",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":10013",
+			"Auth": {
+				"AuthToken": "liXYINtFmUopCRHEExtJqMxgDBpQXVtcpIQqWIZuHrQlVvvxevtHAgmREyJdTHP",
+				"Type": "UserPass",
+				"User": "eftimie.alexandru+gmail.com",
+				"Pass": "mypassword",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": null,
+			"ExpireAt": "2021-11-08 19:37:03"
+		},
+		{
+			"ID": "DuYeCxbAcBxAKHK",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":10014",
+			"Auth": {
+				"AuthToken": "XhowysZHljTuTepXgAoWgHWThLFxvkKOQWgRCrnrbgglBATRZbosZgzWnbUCABb",
+				"Type": "UserPass",
+				"User": "eftimie.alexandru+gmail.com",
+				"Pass": "mypassword",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": null,
+			"ExpireAt": "2021-08-24 02:34:17"
+		},
+		{
+			"ID": "zQBnPWJSeNmVdEY",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":10015",
+			"Auth": {
+				"AuthToken": "ifMhflMNKeEUcvufwgfcjwaCkEcEwnKMeeqHfNievsENivZfmDRImanTvXVogzq",
+				"Type": "UserPass",
+				"User": "eftimie.alexandru+gmail.com",
+				"Pass": "mypassword",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": null,
+			"ExpireAt": "2021-08-24 02:34:23"
+		},
+		{
+			"ID": "RNxxFPrYvWJiGOx",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":10016",
+			"Auth": {
+				"AuthToken": "cMeYdPcUWAGWnjMUriUFWsEgQxhIaADLfqxMnOTvkzLGyUXosLlBMAofhdFJLGt",
+				"Type": "UserPass",
+				"User": "eftimie.alexandru+gmail.com",
+				"Pass": "mypassword",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": null,
+			"ExpireAt": "2021-08-19 22:34:35"
+		},
+		{
+			"ID": "jOMbKvUarjsoJmP",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":10017",
+			"Auth": {
+				"AuthToken": "xyzkRlSqZOQFCzCmTXfhSGenlJufQpXJOgKForazJHYELhXZwBdOcZaFXfAgqQN",
+				"Type": "UserPass",
+				"User": "eftimie.alexandru+gmail.com",
+				"Pass": "mypassword",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": null,
+			"ExpireAt": "2021-08-16 13:57:47"
+		},
+		{
+			"ID": "evOiFMbveEobUVL",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":10018",
+			"Auth": {
+				"AuthToken": "iHnEcYJbknmTBLvNxEqeSQThXLOXPqeddPFKZJLDIObYpXuHYhoWVPIBonxzPAp",
+				"Type": "UserPass",
+				"User": "eftimie.alexandru+gmail.com",
+				"Pass": "mypassword",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 0,
+			"ExpireAt": "2021-08-16 14:30:39"
+		},
+		{
+			"ID": "YRQDKTfkoVRlIMp",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":10019",
+			"Auth": {
+				"AuthToken": "QmqraiuaiCztoqOVyJbzphGrxwMEmbuWMKeGndRKXSXfqsPFEJpXlDCQnFVZhQN",
+				"Type": "IP",
+				"User": "eftimie.alexandru+gmail.com",
+				"Pass": "fAg3E45hG6qV0Y2w1",
+				"IP": {
+					"127.0.0.1": true,
+					"8.8.1.1": false,
+					"8.8.8.8": true
+				}
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 1,
+			"ExpireAt": "2021-08-16 14:31:04"
+		},
+		{
+			"ID": "JaWIKzGcKXuNnRX",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":10020",
+			"Auth": {
+				"AuthToken": "eDMMAJBjAfnswwnPAZqqlsTgXIqPizAoxAwGmqJuoSarmYYfjoomJGWxRZirclF",
+				"Type": "IP",
+				"User": "eftimie.alexandru+gmail.com",
+				"Pass": "mypassword",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 1,
+			"ExpireAt": "2021-08-15 03:09:17"
+		},
+		{
+			"ID": "vDdatChFiScyZok",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":10021",
+			"Auth": {
+				"AuthToken": "HPnlcGNIzqbCmKMxjtmafnuXJnJtBJxLpqMekHaVxKFyHQNiIfwpYHuFXXJaATD",
+				"Type": "IP",
+				"User": "",
+				"Pass": "",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 1,
+			"ExpireAt": "2021-08-15 03:11:20"
+		},
+		{
+			"ID": "jjlhtVxBKaSkOOA",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2023",
+			"Auth": {
+				"AuthToken": "oaAonNjvcFdvdTZZpSIZStpUyfFQykoyAROnicbsEYCuyNfQZPipZXialySyJyt",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "M2d08W16Psgcp7eI",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 894781271458,
+				"Readable": "833.33 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"0": "dedicatedDevice",
+				"11": "dedicatedDevice"
+			},
+			"BWUsageHistory": {
+				"2021-08-22T00:00:00+03:00": {
+					"U": 1222,
+					"D": 1513
+				}
+			}
+		},
+		{
+			"ID": "CXTnUhwNtqRydVt",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2025",
+			"Auth": {
+				"AuthToken": "IjbcITACNDjqngYKBZJDodjhrmrDNAmlgFhoZauJOswVnLJPwWyRMnMkeunLkvp",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "i89Q21xr5qFyHz0S",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 13421772800000,
+				"Readable": "12500.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"0": "dedicatedDevice",
+				"11": "dedicatedDevice",
+				"22": "dedicatedDevice",
+				"33": "dedicatedDevice"
+			}
+		},
+		{
+			"ID": "cIeKHnmbkVkktXu",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2026",
+			"Auth": {
+				"AuthToken": "hmDzrxXFNSMALjFgvtWiHcljZCYWbQiyIhvufmABkMjEBXGThrPlhcVeNsuCIeC",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "8ZD9y0JsY7KX65SP",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 13421772800000,
+				"Readable": "12500.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"0": "dedicatedDevice",
+				"11": "dedicatedDevice",
+				"22": "dedicatedDevice",
+				"33": "dedicatedDevice"
+			}
+		},
+		{
+			"ID": "oReseZgOALteGjp",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2027",
+			"Auth": {
+				"AuthToken": "OpqzkTeKABBBnyoMAGgmjBcGIKHqQgtESvGDbCABJPlVAhjuRPLBeWRrsYZvwPe",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "O0Kq18Hv7Ne32pfT",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 13421772800000,
+				"Readable": "12500.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "WkRKxQUGxRhMZZL",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2028",
+			"Auth": {
+				"AuthToken": "hbFxHCMvMqwCaoWyGFgiXTxGmijGJJGhYxOhewjjSJZFWDLgBunShLrjJoJGQuE",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "C17NKU28dqx3YX5p",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 13421772800000,
+				"Readable": "12500.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "YWsTDTPyXksjpZn",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2029",
+			"Auth": {
+				"AuthToken": "DyseuZagJHVbqznFWwXTADLUhCOKTFrxcCFAzbZSmgveAqtImYSOJuMWCZzDPUS",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "5IN27P0iL4EuY8Wv",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 13421772800000,
+				"Readable": "12500.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"44": "dedicatedDevice",
+				"55": "dedicatedDevice",
+				"66": "dedicatedDevice",
+				"77": "dedicatedDevice"
+			}
+		},
+		{
+			"ID": "NvWXLSbTFvVwsbz",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":2030",
+			"Auth": {
+				"AuthToken": "jJemZsaxnnMCOpliXaVWsbvnleaIzSqibHkAnDpTzTPabYBcWRJSubHCgeNsgVL",
+				"Type": "IP",
+				"User": "",
+				"Pass": "",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 1,
+			"ExpireAt": "2021-08-23 21:28:59"
+		},
+		{
+			"ID": "HkdpgWxUiiefqgi",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":2031",
+			"Auth": {
+				"AuthToken": "lzPltnszMtktllRHknUoEWVreBlorAOManHIJMBAmjfYpbxJjrIMnBEIxIyUQtk",
+				"Type": "IP",
+				"User": "",
+				"Pass": "",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 1,
+			"ExpireAt": "2021-08-23 21:30:14"
+		},
+		{
+			"ID": "hxCkSdwbbbAuMsB",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":2032",
+			"Auth": {
+				"AuthToken": "eYgKZOnBdiEqmTfeKcdbhscVOezfzmvZmAlfyZPkiuxmSTfCsnuWwDFuaTxIhYL",
+				"Type": "IP",
+				"User": "",
+				"Pass": "",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 1,
+			"ExpireAt": "2021-08-23 21:31:12"
+		},
+		{
+			"ID": "PqztnvfwUgKNWXq",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":2033",
+			"Auth": {
+				"AuthToken": "gYLklgAqzGhLIwlJyvfAOZpcCUpeWKjmEtLZnUOdmxMndCzxIvAmrRUYagmGELw",
+				"Type": "IP",
+				"User": "",
+				"Pass": "",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 1,
+			"ExpireAt": "2021-11-15 17:04:52"
+		},
+		{
+			"ID": "ixgIkbSwxKtrjkN",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":2034",
+			"Auth": {
+				"AuthToken": "zzaPKvbRCNuBPdElspLwgMZPkjQFzOKxLCXrcIbJBnCvfnmSiUuPGwCpvOFicfd",
+				"Type": "IP",
+				"User": "",
+				"Pass": "",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 1,
+			"ExpireAt": "2021-08-23 21:33:17"
+		},
+		{
+			"ID": "DaHLcPelvwMSFER",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":2035",
+			"Auth": {
+				"AuthToken": "KzhThdmseAmPEBmVIqfhdPpogsTKqdPEdgkcnOwHRnTnUmyXCsTdccCJRkdOGRy",
+				"Type": "IP",
+				"User": "",
+				"Pass": "",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 1,
+			"ExpireAt": "2021-08-24 02:07:55"
+		},
+		{
+			"ID": "wJDegrlKFnzYtXH",
+			"Client": "eftimie.alexandru@gmail.com",
+			"Addr": ":2036",
+			"Auth": {
+				"AuthToken": "xnKPvHCvkviOUBAQVpzJweTdjFHMoGNuIOZsjVKhZmWkEaWeeTeTrMOoaiymENb",
+				"Type": "UserPass",
+				"User": "eftimie.alexandru+gmail.com",
+				"Pass": "11mypassword",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 21474836480,
+				"Readable": "20.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "AuYaAXQkgjhATqX",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2037",
+			"Auth": {
+				"AuthToken": "hufHIakFJKooScxcNWLQQFwYSjboULDHFbvsCIrQvSXvPpWrICztDrmLngKXnWJ",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "j2n4ojb29bnXKNO",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "iYhDsqDLGAQVuHZ",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2038",
+			"Auth": {
+				"AuthToken": "KXgwHyUMENlmNfpyrlmUcjVPXKsQnisRsSmxwNwwxYvQPfxkPLTeoeCxNRHjLzl",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "ugGPo0tMmJxFevs",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 214748364800,
+				"Readable": "200.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "WuIZwZKHlNMnALB",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2039",
+			"Auth": {
+				"AuthToken": "PMPZXJJPpeqTNtuHQsDOjYiSXhEEQFygLLVxbbRsqIidpxwiJyekBrItMAZgwRW",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "Yp1VZwK1qk8xcmr",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 50,
+				"Readable": "50.00 B"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "EpGdsiTCQSNOJGy",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2040",
+			"Auth": {
+				"AuthToken": "tyKxdUQUTnqxlTBrawfTNLDFmjFcVNjSZymPpRtkhurJixvFAhoaFjcDGFEDFEv",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "Yp1VZwK1qk8xcmr",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 50,
+				"Readable": "50.00 B"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "tujICzvFKOMTFJb",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2041",
+			"Auth": {
+				"AuthToken": "CaflmgMdETrKxOxLZgtWYlPucULPhCMiPYjTInMbeblObXOGiittrTQETxLWDGN",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "Yp1VZwK1qk8xcmr",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 50,
+				"Readable": "50.00 B"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "WFHuDYwXzcFrGyN",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2042",
+			"Auth": {
+				"AuthToken": "mZPOsEHLErltaYhSxCSiQaHdPWvAaoRWSldYgfosVQgoZBjGtZrJbGFLgudWtWz",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "Yp1VZwK1qk8xcmr",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 50,
+				"Readable": "50.00 B"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "RydMHbTfrupYdEd",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2043",
+			"Auth": {
+				"AuthToken": "VuqSyXjPsfCQawizqyfEbMeeEBHQDxvhrGsSIhSetOmGmKFcdTQfxxwpQBOIzai",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "4dzwlDsOifRcgS2",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 34467112550,
+				"Readable": "32.10 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "iISyaGFSQigIZwi",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2044",
+			"Auth": {
+				"AuthToken": "WsZDEkvdOnYNlIUdYQNpObMFUbwiRwVxTRWlAqViKkYqVSKjiKynzESXgiLYgsk",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "DbxZI4ZU6V7z8No",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "HeWuDieWVCHVQFc",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2045",
+			"Auth": {
+				"AuthToken": "QDXbNVBGDsZviTGGsCUywHBNUCNpJsoCPbYCrAvAWKAPPVQPMFEbkhmFvhuOOyY",
+				"Type": "IP",
+				"User": "",
+				"Pass": "",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 1,
+			"ExpireAt": "2021-09-01 01:33:55"
+		},
+		{
+			"ID": "wmMeACChtbVKyEK",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2046",
+			"Auth": {
+				"AuthToken": "UqKsYWFcfAeMQRswbswMuinkFphEaNDcavGxkEhVWwaCCaYUHktZBnNNKzXadPY",
+				"Type": "IP",
+				"User": "",
+				"Pass": "",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 1,
+			"ExpireAt": "2021-09-01 01:35:49"
+		},
+		{
+			"ID": "GeHoQHjjBYOsKFx",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2047",
+			"Auth": {
+				"AuthToken": "oCQwNykbKNfziCJcJMUQSZpVrftGnLtPVoAHYFjyFpvtDmhdVVcmVlsEuKPOPoi",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "dPVnBGYbDYFawhq",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": "2021-09-01 01:36:22"
+		},
+		{
+			"ID": "mzRYCXMLabYTCnc",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2048",
+			"Auth": {
+				"AuthToken": "LxwZLaiHNtOhfcjKWJujQkLQVUdoWhMzephXNbPuylwKyldRUocjeuhTTnYjaYP",
+				"Type": "IP",
+				"User": "",
+				"Pass": "",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 1,
+			"ExpireAt": "2021-09-01 11:37:23"
+		},
+		{
+			"ID": "MLkXJulHjFJonrT",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2050",
+			"Auth": {
+				"AuthToken": "TOOyBGEtpjrSOpvVccxiOvJKGdqRcmaWWTMfKJFfkAXyrmeenoDBpnMKJmypylZ",
+				"Type": "IP",
+				"User": "",
+				"Pass": "",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 1,
+			"ExpireAt": "2021-09-01 01:38:33"
+		},
+		{
+			"ID": "ygmTXPIZwUwHHMv",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2051",
+			"Auth": {
+				"AuthToken": "lUTnnCPRIEGTiYDagGYGPbssLmnHcXKGgWHenprDjTDhdGQUcVCkSMGQiInctpr",
+				"Type": "IP",
+				"User": "",
+				"Pass": "",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 1,
+			"ExpireAt": "2021-09-01 11:40:09"
+		},
+		{
+			"ID": "tKtCcafIzsNxafc",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2052",
+			"Auth": {
+				"AuthToken": "ipBTNryuKmJwelWPFsztxxslfMlQImECAFPyVVLfaABXpnJOpWadtXusnmClXpI",
+				"Type": "IP",
+				"User": "",
+				"Pass": "",
+				"IP": {
+					"127.0.0.1": true
+				}
+			},
+			"Bytes": null,
+			"MaxThreads": 100,
+			"MaxIPs": 1,
+			"ExpireAt": "2021-08-31 23:43:51"
+		},
+		{
+			"ID": "WXyYUXKACMFyPaC",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2053",
+			"Auth": {
+				"AuthToken": "BjXPrXpdlIUydmtbBAqtujUvCBHUwhcejvlBtWmolOkXmEaMIWBqBNPMbHiVLgk",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "zi90S63FgH7nyo5c",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "UsqnnAIUrXmEiUL",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2054",
+			"Auth": {
+				"AuthToken": "HsZapBuhpSYbYisdkNYVafDpPwbIXCIMkNtgeYVKcDTpSDcXPfojPTABtRoTPXp",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "1y2eOSxsJfz6c807",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"11": "dedicatedDevice"
+			}
+		},
+		{
+			"ID": "jooiOSQihiEMwCi",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2055",
+			"Auth": {
+				"AuthToken": "swbrepTPZXjiMPjhcSqWuGOverGbvFiEQcuabcBjLqJQnKnqUhdapLGpbOOFOqr",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "WrN2GhF0osq196x8",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"22": "dedicatedDevice"
+			}
+		},
+		{
+			"ID": "uKyXitexOFIYofe",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2056",
+			"Auth": {
+				"AuthToken": "MEnAQoJAHhRZlQBrQFXtFuKoHqjJcMeccrVgzyJCXMoblsbbhJPZRbHPkxDkhpU",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "EI2zX6LRcW80Tp74",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 48318382080,
+				"Readable": "45.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"33": "dedicatedDevice",
+				"44": "dedicatedDevice",
+				"55": "dedicatedDevice",
+				"66": "dedicatedDevice"
+			}
+		},
+		{
+			"ID": "DTwpIVLxyuOFtws",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2057",
+			"Auth": {
+				"AuthToken": "JmAsnQjgGnORWaLeIcSWLidzSxljmTvTQfIAvefqUViKlJHjKUZzRqLkylKJpAU",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "o341J7RvScKj56yq",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "XbOPHAafljfseGj",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2058",
+			"Auth": {
+				"AuthToken": "VoeycoKuZPURqqYrNtCfYPXDoQOKroPezTvHPQDCadeFFMBIUSnojqpQFsBgqbu",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "26qy1G7wPvYEf9D0",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 13421772800,
+				"Readable": "12.5 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "mgfFnWYkExrxLwx",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2059",
+			"Auth": {
+				"AuthToken": "biryyLvdRvIHmhqvdAnoQzhuprYjmiXFXzLhBBeYtCwLLGunIlqrgzpnsiTMuXP",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "50rj13ky6wgWE9Pc",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 13421772800,
+				"Readable": "12.5 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"11": "dedicatedDevice"
+			}
+		},
+		{
+			"ID": "cIirsCQHUzrqrOd",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2060",
+			"Auth": {
+				"AuthToken": "fYRMglkNJkOgbSMepAvYltlhxNmgQUtoGqfVNikSJhkQIPIrbnMtipadCmpBfhU",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "f9w5Zh68Wug0tCi3",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 54358179840,
+				"Readable": "50.625 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"22": "dedicatedDevice",
+				"33": "dedicatedDevice",
+				"44": "dedicatedDevice"
+			}
+		},
+		{
+			"ID": "OWhwrReSXPmDQRw",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2063",
+			"Auth": {
+				"AuthToken": "lKxoXRIsRNJwIXCJvAqMyZMavZDmKsnaORmCkiVsZmPiHOOXyByYFufTrXFaMYo",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "MeH56VZ489G1lbcU",
+				"IP": null
+			},
+			"Bytes": null,
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "RxUuLGnSTCAnbnR",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2066",
+			"Auth": {
+				"AuthToken": "FohurubJHGQrQnmFeGpBhhQISixzxiyMpnxdLiTFJdvwxnNDpKUxyaYBUjiRNFO",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "H3q29jnV0ChN78iI",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 182536110080,
+				"Readable": "170.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": "2022-01-12 18:01:24",
+			"Devices": {
+				"11": "dedicatedDevice",
+				"22": "dedicatedDevice",
+				"33": "dedicatedDevice",
+				"44": "dedicatedDevice"
+			}
+		},
+		{
+			"ID": "XQYvepWAHDdmKeg",
+			"Client": "eftimie.alexandru12345@gmail.com",
+			"Addr": ":2074",
+			"Auth": {
+				"AuthToken": "TQNzijDVIPwpqeTlDdabJTFPErooocMQrueAlbXoipSkibNJNgQxGhxRyzhgfgm",
+				"Type": "UserPass",
+				"User": "eftimie.alexandru12345+gmail.com",
+				"Pass": "GCP2Xp4rMIS913T0",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 13421772800,
+				"Readable": "12.5 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"9b7816d0-fede-4c0e-a8e2-2ec2103d89a2": "dedicatedDevice"
+			}
+		},
+		{
+			"ID": "iKmkJjZTDCtcCXj",
+			"Client": "john@doe.com",
+			"Addr": ":2076",
+			"Auth": {
+				"AuthToken": "YomictoJNoSCVhYnPgEXopqtetQiFkoAdPDaQEZAUoXxNxRQBaNCjodyzUgGQHn",
+				"Type": "UserPass",
+				"User": "john+doe.com",
+				"Pass": "N3SP58GY1M7nW0Zh",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10984378859,
+				"Readable": "10.23 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "YiprZcqBNCecgKy",
+			"Client": "john@doe.com",
+			"Addr": ":2077",
+			"Auth": {
+				"AuthToken": "ErNMLdAtciTfKxJkfpsGOvxdePuJksNnUGUPrSoxpLDzuybjYVAbxySqJCzNCqA",
+				"Type": "UserPass",
+				"User": "john+doe.com",
+				"Pass": "4Zbf93yJVY6v1l0x",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10984378859,
+				"Readable": "10.23 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "vTrjBRrnUyPvTGQ",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2078",
+			"Auth": {
+				"AuthToken": "VgGpPGRFVMGNTyrVgmAEYeHjKoNfYpOooKbITjbMBOjONrEsLVYvXLenOMhYRzG",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "5WS8p60i7dq3gLUB",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 91268055040,
+				"Readable": "85.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "ugeipnaYpSQOgCU",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2084",
+			"Auth": {
+				"AuthToken": "zFTZLrduJYyPfTsWCnYlfTRKiaJbqnsVLvleXksUMLmpKGGtQSmmjAfmbnsLIuG",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "i49XhK01e3pfDy2N",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 91268055040,
+				"Readable": "85.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "JNBnBmkvoEZbTrG",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2087",
+			"Auth": {
+				"AuthToken": "ApDgcDfUbakaCDRmJlItBIZtAVEGtLqSCcdZChJtNJzajyaCECervVtTwmRkusD",
+				"Type": "IP",
+				"User": "office+alexeftimie.ro",
+				"Pass": "e2uOC8qb30Y4yN6x",
+				"IP": {
+					"127.0.0.1": true
+				}
+			},
+			"Bytes": {
+				"Value": 31956330040,
+				"Readable": "29.76 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "staticProxy:http://7abc9f05dc29:9f8070a6d5@31.131.9.241:12323"
+			},
+			"BWUsageHistory": {
+				"2021-11-20T00:00:00+02:00": {
+					"U": 143088000,
+					"D": 1054174000
+				},
+				"2022-01-03T00:00:00+02:00": {
+					"U": 31834935000,
+					"D": 5682787000
+				},
+				"2022-01-04T00:00:00+02:00": {
+					"U": 58960000,
+					"D": 75196000
+				},
+				"2022-01-06T00:00:00+02:00": {
+					"U": 20451662000,
+					"D": 10923000
+				}
+			}
+		},
+		{
+			"ID": "OcJPNepXlOcRqwR",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2090",
+			"Auth": {
+				"AuthToken": "BRFAHQisHQnWvKNAOfjVJbrrgcFBGsvZEJbRQWWGSCXRjwDKhNtkvUgGsixbWNX",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "R3t6Hc0vi497YSIe",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 536870912000,
+				"Readable": "500.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": "2022-02-06 20:52:41"
+		},
+		{
+			"ID": "RwvlpbLJqKJnpuP",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2091",
+			"Auth": {
+				"AuthToken": "BPDeNbYVSvFrjUXQDBzRFXRslfQxxfwUMgtlwnsTpatlDhXRxfJckxeIHePzgUS",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "92v6JZt37Dd8mlPX",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.0 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null
+		},
+		{
+			"ID": "QQKlsJoaNDNVQgF",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2092",
+			"Auth": {
+				"AuthToken": "EhQfnrTLcsiKavykIDOsUzhmNavtxVFtwEqxBSLivfztVVwYLPGOjzcUOZOpiup",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "VB47tSc0az9W51pi",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 13421772800,
+				"Readable": "12.5 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "dedicatedDevice:0"
+			}
+		},
+		{
+			"ID": "hWOXPvETESwKMdy",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2093",
+			"Auth": {
+				"AuthToken": "NBEaNolDAUuPcKclalXgXNfisgEHEdpMzYBkXfEmixnBYaRuWUhXolzkNPKxRJC",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "NiXxu5G4F1Caz837",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.0 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "staticProxy:http://7ab43623e3c2:a76e72a879@31.131.11.208:12323",
+				"2": "staticProxy:http://7ab43623e3c2:a76e72a879@31.131.8.97:12323",
+				"3": "staticProxy:http://7ab43623e3c2:a76e72a879@31.131.9.76:12323"
+			}
+		},
+		{
+			"ID": "kDRxmYxAJOTvCam",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2094",
+			"Auth": {
+				"AuthToken": "XDpWuOgJxtNdPnOkJcizycQJgOHjDVSrhyuTWFrzdbutIRwyYGdNxYkhfmBQVUC",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "N38Ic74bvY52yDPh",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.0 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "staticProxy:http://7ab43623e3c2:a76e72a879@31.131.11.208:12323"
+			}
+		},
+		{
+			"ID": "JXbgdElYLQiaNMJ",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2095",
+			"Auth": {
+				"AuthToken": "ZJwGyiatuYRLlKFfNsofiiYWSqtcrsUczTPIAJsDehmkolZlFpDemuhKPLHtxNL",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "nEG290X6wN7H3Rcx",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.0 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "staticProxy:http://7ab43623e3c2:a76e72a879@31.131.11.208:12323"
+			}
+		},
+		{
+			"ID": "kwLJgDctHAOlLpc",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2096",
+			"Auth": {
+				"AuthToken": "dmQVwiSoBWuaADlOBCFXupiFTMLIQGWPKfokxeNgLGYtVNKsEaEoCqXXaLteeZt",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "JeC87142Ki0rIVoH",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.0 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "staticProxy:http://7ab43623e3c2:a76e72a879@31.131.8.97:12323"
+			}
+		},
+		{
+			"ID": "XgKOqAhUPZNxKMH",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2097",
+			"Auth": {
+				"AuthToken": "UpckauNTduhAuWyoCPWVsyxhxIdzFZoSbbihfRqcbeezOpHtTelvjhhGJghGMIx",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "25i6So18lBebqKY7",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.0 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "staticProxy:http://7ab43623e3c2:a76e72a879@31.131.9.76:12323"
+			}
+		},
+		{
+			"ID": "SRwYsjjqCLqMyzX",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2098",
+			"Auth": {
+				"AuthToken": "dLkbQjktzIhnSUVqPLCPnJVLLlVFYOagwtGeiosXKFEelGMshIATVaakckYoHVc",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "A28eE03Tpc79zPtM",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.0 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "staticProxy:http://7ab43623e3c2:a76e72a879@31.131.10.188:12323"
+			}
+		},
+		{
+			"ID": "hqMjWVwZVHoKlYc",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2099",
+			"Auth": {
+				"AuthToken": "xhogXwhSMfgqIAYPfRUCjsWFhIqGJgzfVinqPkPEokCckZAGdoCTiEtRXcGCvwd",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "TR3AIiO1xDQ7m956",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.0 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "staticProxy:http://7ab43623e3c2:a76e72a879@31.131.11.208:12323"
+			}
+		},
+		{
+			"ID": "riITeOBglUOgnnm",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2100",
+			"Auth": {
+				"AuthToken": "TpwjdiNpBDjJCGUCAyrvWEWblZwxHgDKawbZVvQZVQNUhyvhYFLYegYMrmdGVmG",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "ESpU97m3OIs4Wn12",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.0 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "staticProxy:http://7ab43623e3c2:a76e72a879@31.131.8.97:12323"
+			}
+		},
+		{
+			"ID": "RrbJdLcCNrmGdcB",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2101",
+			"Auth": {
+				"AuthToken": "KdxuxQoEKTwRdAkkNfjmlDnCxlvTpucWaFiWRtPqOxizKgxxHhqNbPGXvaQowwR",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "2EdJrCTi910bLX86",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.0 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "staticProxy:http://7ab43623e3c2:a76e72a879@31.131.9.76:12323"
+			}
+		},
+		{
+			"ID": "poBsCmOsbIvIMbU",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2102",
+			"Auth": {
+				"AuthToken": "PKQxEzHujBOUjvpcQXmzlVbXjeKNUTYrUsfJwdLTAiufHdMaSvpWBcJByJTFlMo",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "kr8go54fvNh1R6X2",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.0 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "staticProxy:http://7ab43623e3c2:a76e72a879@31.131.10.188:12323"
+			}
+		},
+		{
+			"ID": "nPkBeoJjniMZQTY",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2104",
+			"Auth": {
+				"AuthToken": "SVxMCZoKHdXFuPngRjqglgfQDMQiajUChNfJLGrpTzyUSTXjBJUUdydbemizuyV",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "Iv206o89mOJAip7z",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 10737418240,
+				"Readable": "10.0 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "staticProxy:http://7ab43623e3c2:a76e72a879@31.131.8.196:12323"
+			}
+		},
+		{
+			"ID": "ztnWrpaHlQQNYaU",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2106",
+			"Auth": {
+				"AuthToken": "xXUcAcUsmivtrnRFtJhuWgyblCiiDtSwtlnqahhZmgCkHSlzlFntOIAINmZRkyT",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "8iI9A45Craotx1J0",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 13421772800,
+				"Readable": "12.5 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "dedicatedDevice:11"
+			}
+		},
+		{
+			"ID": "hLuWDrhZNKDhYtz",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2107",
+			"Auth": {
+				"AuthToken": "zeJxcVTAfDddyChDAcWKentRIigWbKHdWdCSZYKtNiuozSaPvKTSmzYLfGfcGuf",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "024fnNM39H7AIFex",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 13421772800,
+				"Readable": "12.5 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "dedicatedDevice:55"
+			}
+		},
+		{
+			"ID": "AKFZtNVhPXXlpfP",
+			"Client": "office@alexeftimie.ro",
+			"Addr": ":2108",
+			"Auth": {
+				"AuthToken": "tNgQzqqcGONqsvjGijcQNBjVUKGJruxOlDTMOUxsEEgbgoffAIinRnFxvaeJscY",
+				"Type": "UserPass",
+				"User": "office+alexeftimie.ro",
+				"Pass": "yu416tjROQ9Gls30",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 13421772800,
+				"Readable": "12.5 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "dedicatedDevice:66"
+			}
+		},
+		{
+			"ID": "pkBKaiEWdwKmpyr",
+			"Client": "intellogics7@gmail.com",
+			"Addr": ":10099",
+			"Auth": {
+				"AuthToken": "nUqnPmGOiJAyUjNFBmgYEDjQOfaAWZZnbDoRSCIEDdKEkVKRwQzLxcTRDVrewHp",
+				"Type": "UserPass",
+				"User": "intellogics7+gmail.com",
+				"Pass": "2Rm76TqWA304UsCQ",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 53687091200,
+				"Readable": "50.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "staticProxy:http://7abc9f05dc29:9f8070a6d5@31.131.9.89:12323"
+			}
+		},
+		{
+			"ID": "pkBKaiEWdwKmsspyr",
+			"Client": "intellogics7@gmail.com",
+			"Addr": ":10098",
+			"Auth": {
+				"AuthToken": "nUqnPmGOiJAyUjNFBmgYEDjQOfaAWZZnbDoRSaaCIEDdKEkVKRwQzLxcTRDVrewHp",
+				"Type": "UserPass",
+				"User": "intellogics7+gmail.com",
+				"Pass": "2Rm76TqWA304UsssCQ",
+				"IP": null
+			},
+			"Bytes": {
+				"Value": 53687091200,
+				"Readable": "50.00 GB"
+			},
+			"MaxThreads": null,
+			"MaxIPs": null,
+			"ExpireAt": null,
+			"Devices": {
+				"1": "staticProxy:http://7abc9f05dc29:9f8070a6d5@31.131.9.89:12323"
+			}
+		}
+	]
+}

@@ -6,17 +6,26 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net"
 	"os"
 	"strings"
 	"sync"
 	"time"
 
-	"github.com/Alex-Eftimie/netutils"
+	"github.com/alex-eftimie/netutils"
+	"github.com/alex-eftimie/utils"
+	"github.com/davecgh/go-spew/spew"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
+	proxyproto "github.com/pires/go-proxyproto"
 	"github.com/shenwei356/util/bytesize"
 	"github.com/soheilhy/cmux"
 )
+
+// Accountable is an interface for net.Conn that contain a CounterConn
+type Accountable interface {
+	GetCounterConn() *netutils.CounterConn
+}
 
 // PrettyByte is used to store Bytes in Value bytes and Readable format
 type PrettyByte struct {
@@ -35,7 +44,7 @@ var SessionMaster *SessionManager
 
 var AccessLogger *log.Logger
 
-func init() {
+func loadLogger() {
 
 	SessionMaster = &SessionManager{
 		Sessions: make(map[string]*hp),
@@ -86,6 +95,7 @@ type Server struct {
 	// Socks5Server   *socks5Server `json:"-"`
 	HTTPServer     *CustomHTTPServer   `json:"-"`
 	Socks5Server   *CustomSocks5Server `json:"-"`
+	H2CServer      *H2CServer          `json:"-"`
 	CMux           cmux.CMux           `json:"-"`
 	Client         string
 	Addr           string
@@ -93,11 +103,13 @@ type Server struct {
 	Bytes          *PrettyByte
 	MaxThreads     *int
 	MaxIPs         *int
-	ExpireAt       *PTime
-	parent         *ConfigType // don't export it, it will cause cycles
+	DefaultGroup   *string `json:",omitempty"`
+	ExpireAt       *utils.Time
+	parent         *CacheType // don't export it, it will cause cycles
 	limiter        *ServerLimiter
-	Devices        map[string]bool `json:",omitempty"`
-	BWUsageHistory map[time.Time]*BWUsage
+	Devices        map[string]string      `json:",omitempty"`
+	BWUsageHistory map[time.Time]*BWUsage `json:",omitempty"`
+	DeviceSlice    []string               `json:"-"`
 }
 
 // RunServer starts a http listener on s.Addr
@@ -108,14 +120,29 @@ func RunServer(s *Server) error {
 		log.Fatalf("Server %s has invalid Auth.Type %s", s.ID, s.Auth.Type)
 	}
 
-	s.parent = Co
-	if s.ID != "" {
-		Ca.ServerMap[s.ID] = s
+	// check for ServerMap collisions
+	if _, ok := Ca.ServerMap[s.ID]; ok {
+		return fmt.Errorf("Server id %s already exists", s.ID)
+	}
+	if _, ok := Ca.ServerMap[s.Auth.AuthToken]; ok {
+		return fmt.Errorf("Server AuthToken %s already exists", s.Auth.AuthToken)
+	}
+	if _, ok := Ca.ServerMap[s.Addr]; ok {
+		return fmt.Errorf("Server Addr %s already exists", s.Addr)
 	}
 
-	if s.Auth.AuthToken != "" {
-		Ca.ServerMap[s.Auth.AuthToken] = s
+	s.parent = Ca
+
+	Ca.ServerMap[s.ID] = s
+
+	Ca.ServerMap[s.Auth.AuthToken] = s
+
+	var list []string
+	for k := range s.Devices {
+		list = append(list, k)
 	}
+	s.DeviceSlice = list
+
 	Ca.ServerMap[s.Addr] = s
 
 	s.SyncBandwidth()
@@ -124,11 +151,21 @@ func RunServer(s *Server) error {
 		s.BWUsageHistory = make(map[time.Time]*BWUsage)
 	}
 
+	// bind on the serverIP if the ip part of the addr is empty
+	addr := s.Addr
+	if addr[0] == ':' {
+		addr = Co.ServerIP + addr
+	}
+
 	// test port first
 	// Create the main listener.
-	l, err := net.Listen("tcp", s.Addr)
+	l, err := net.Listen("tcp", addr)
 	if err != nil {
 		return err
+	}
+	proxyListener := &proxyproto.Listener{
+		Listener: l,
+		Policy:   proxyproto.MustLaxWhiteListPolicy(Co.AllowProxyProtocolFrom),
 	}
 
 	// hs := &http.Server{
@@ -142,14 +179,19 @@ func RunServer(s *Server) error {
 	// s.HTTPServer = hs
 	// s.Socks5Server = &socks5Server{AuthType: s.Auth.Type, parent: s}
 	s.Socks5Server = newSocks5Server(s)
+	s.H2CServer = newH2CServer(s)
 
 	// return ListenAndServe(hs)
-	go s.Serve(l)
+	go s.Serve(proxyListener)
 	return nil
 }
 
 func (s *Server) Close() {
 	// s.CMux.Close()
+	if s.HTTPServer == nil {
+		spew.Config.MaxDepth = 1
+		spew.Dump(s.Addr, s)
+	}
 	s.HTTPServer.Close()
 	s.Socks5Server.Close()
 }
@@ -164,218 +206,16 @@ func (s *Server) Serve(l net.Listener) {
 	// run the matchers
 	socks5Matcher := s.CMux.Match(Socks5Matcher())
 	httpMatcher := s.CMux.Match(cmux.HTTP1Fast())
+	h2cMatcher := s.CMux.Match(cmux.HTTP1Fast("PRI"))
 
 	// run the servers
 	go s.HTTPServer.Serve(httpMatcher)
 	go s.Socks5Server.Serve(socks5Matcher)
+	go s.H2CServer.Serve(h2cMatcher)
 
 	s.CMux.Serve()
 
-	// // recover if weird errors pop up
-	// go func() {
-	// 	if r := recover(); r != nil {
-	// 		log.Println("Recovered in f", r)
-	// 	}
-	// 	// srv.Serve(cl)
-	// 	s.CMux.Serve()
-	// }()
 }
-
-// // ListenAndServe listens on srv.Addr and starts a goroutine to Serve connections
-// func ListenAndServe(srv *http.Server) error {
-// 	addr := srv.Addr
-// 	if addr == "" {
-// 		addr = ":http"
-// 	}
-// 	ln, err := net.Listen("tcp", addr)
-// 	if err != nil {
-// 		log.Println("Failed to listen", err)
-// 		return err
-// 	}
-// 	cl := netutils.CounterListener{Listener: ln}
-// 	go func() {
-// 		if r := recover(); r != nil {
-// 			log.Println("Recovered in f", r)
-// 		}
-// 		srv.Serve(cl)
-// 	}()
-
-// 	return nil
-// }
-
-// func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-
-// 	if s.limiter.Add() == false {
-// 		w.Header().Set("X-Error", "Too many threads")
-// 		debug(999, "Too many threads:", r.RemoteAddr)
-// 		http.Error(w, "", http.StatusPaymentRequired)
-// 		return
-// 	}
-// 	defer s.limiter.Done()
-
-// 	debug(999, "New connection:", r.RemoteAddr)
-
-// 	if s.ExpireAt != nil && s.ExpireAt.Before(time.Now()) {
-// 		w.Header().Set("X-Error", "Expired")
-// 		debug(999, "Expired:", r.RemoteAddr)
-// 		http.Error(w, "", http.StatusPaymentRequired)
-// 		return
-// 	}
-
-// 	if s.HasBW() == false {
-// 		w.Header().Set("X-Error", "Not enough bandwidth")
-// 		debug(999, "Not enough bandwidth:", r.RemoteAddr)
-// 		http.Error(w, "", http.StatusPaymentRequired)
-// 		return
-// 	}
-// 	w.Header().Set("X-Proxy-Agent", Co.ProxyAgent)
-
-// 	uinfo := GetAuth(r)
-// 	m := make(map[string]string)
-
-// 	if uinfo == nil {
-// 		uinfo = &netutils.UserInfo{User: "", Pass: ""}
-// 	} else {
-// 		if uinfo.User != "" {
-// 			r := utils.ParseParams(uinfo.User, &m, false)
-// 			if r != "" {
-// 				uinfo.User = r
-// 			}
-// 		}
-
-// 		if uinfo.Pass != "" {
-// 			r := utils.ParseParams(uinfo.Pass, &m, false)
-// 			if r != "" {
-// 				uinfo.Pass = r
-// 			}
-// 		}
-// 	}
-
-// 	ProxyConfig := r.Header.Get("Proxy-Config")
-// 	if ProxyConfig != "" {
-// 		r.Header.Del("Proxy-Config")
-// 		utils.ParseParams(ProxyConfig, &m, false)
-// 	}
-
-// 	if s.Auth.Type == AuthTypeIP {
-// 		ip := strings.Split(r.RemoteAddr, ":")[0]
-
-// 		if val, ok := s.Auth.IP[ip]; !ok || val == false {
-// 			w.Header().Set("X-Error", "IP not allowed")
-// 			w.Header().Add("X-ip", ip)
-// 			http.Error(w, "", http.StatusProxyAuthRequired)
-// 			debug(999, "IP not allowed:", r.RemoteAddr)
-// 			return
-// 		}
-// 	} else if s.Auth.Type == AuthTypeUserPass {
-// 		if CheckUser(uinfo, s.Auth) == false {
-
-// 			w.Header().Set("Proxy-Authenticate", " Basic")
-
-// 			w.WriteHeader(http.StatusProxyAuthRequired)
-
-// 			debug(999, r.RemoteAddr, spew.Sdump(r.Header))
-// 			debug(99, "Wrong User/Pass Combination:",
-// 				"\n\tActual:", uinfo.User, uinfo.Pass,
-// 				"\n\tExpected", s.Auth.Type, s.Auth.User, s.Auth.Pass)
-// 			return
-// 		}
-// 	}
-// 	debug(999, "Auth Success", s.Auth.Type, r.RemoteAddr, "Server:", s.Auth.Pass, s.Auth.User, "User:", uinfo.Pass, uinfo.User)
-
-// 	var proxyP *ProxyInfo
-
-// 	m["Group"] = "Default"
-
-// 	ParseProxyParams(&m, true)
-
-// 	m["Group"] = strings.ToUpper(m["Group"])
-
-// 	if s.Devices != nil {
-// 		// if requested specific device
-// 		d, ok := m["device"]
-// 		if !ok {
-// 			for v := range s.Devices {
-// 				d = v
-// 				break
-// 			}
-// 			m["device"] = d
-// 		}
-// 		proxyP = getDynamicProxy(d)
-// 	} else if v, ok := m["sticky"]; ok { // IF sticky ip requested, get the same proxy
-// 		key := uinfo.User + "::" + v
-
-// 		// log.Println("get", key)
-// 		proxyP = SessionMaster.GetSession(key)
-// 		if proxyP == nil {
-// 			// log.Println("set", key)
-// 			proxyP = GetRandomProxy(m["Group"])
-// 			SessionMaster.SetSession(key, proxyP)
-// 		}
-// 	} else {
-// 		// log.Println("random proxy")
-// 		proxyP = GetRandomProxy(m["Group"])
-// 	}
-
-// 	if proxyP == nil {
-// 		http.Error(w, "Proxy Not Available", http.StatusBadGateway)
-// 		return
-// 	}
-
-// 	m["User"] = proxyP.User
-// 	m["Pass"] = proxyP.Pass
-// 	ParseProxyParams(&m, false)
-
-// 	proxy := &ProxyInfo{
-// 		Host: proxyP.Host,
-// 		Port: proxyP.Port,
-// 		User: m["User"],
-// 		Pass: m["Pass"],
-// 		Type: proxyP.Type,
-// 	}
-
-// 	// hijack the HTTP Connection
-// 	hijacker, ok := w.(http.Hijacker)
-// 	if !ok {
-// 		http.Error(w, "Tunneling(HJ) not supported", http.StatusInternalServerError)
-// 		return
-// 	}
-// 	clientConn, _, err := hijacker.Hijack()
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusServiceUnavailable)
-// 		return
-// 	}
-// 	defer clientConn.Close()
-
-// 	var destConn *netutils.CounterConn
-// 	done := make(chan bool, 1)
-
-// 	if proxy.Type == TypeSocks5 {
-// 		destConn = forwardSocks(proxy, r, clientConn, done)
-// 	} else {
-// 		destConn = forwardHTTP(proxy, r, clientConn, done)
-// 	}
-
-// 	// Count all bytes transfered no matter what
-// 	// perform connection logging
-// 	defer func() {
-// 		// wait for the forwarding to finish
-// 		<-done
-// 		mc := clientConn.(*cmux.MuxConn)
-// 		cl := mc.Conn.(*netutils.CounterConn)
-
-// 		up := destConn
-
-// 		if up.Upstream+up.Downstream > cl.Upstream+cl.Downstream {
-// 			s.LogConnection(r.Host, "HTTP", up.Downstream, up.Upstream)
-// 			s.Consume(up.Downstream, up.Upstream)
-// 		} else {
-// 			s.LogConnection(r.Host, "HTTP", cl.Downstream, cl.Upstream)
-// 			s.Consume(cl.Downstream, cl.Upstream)
-// 		}
-
-// 	}()
-// }
 
 // SyncBandwidth sync Bytes.Value to Bytes.Readable if they are different
 // Used when Updating bandwidth to update bandwidth in human readable format
@@ -505,164 +345,6 @@ func Bod(t *time.Time) time.Time {
 	return time.Date(year, month, day, 0, 0, 0, 0, t.Location())
 }
 
-// func (s *Server) Lock() {
-// 	log.Println("Locking Server", s.ID)
-// 	s.Lock()
-// }
-// func (s *Server) Unlock() {
-// 	log.Println("Unlocking Server", s.ID)
-// 	s.Unlock()
-// }
-
-// func forwardHTTP(proxy *ProxyInfo, r *http.Request, clientConn net.Conn, done chan bool) *netutils.CounterConn {
-// 	dc, err := net.DialTimeout("tcp", proxy.Addr(), 10*time.Second)
-// 	if err != nil {
-
-// 		resp := &http.Response{
-// 			StatusCode: http.StatusBadGateway,
-// 			Status:     http.StatusText(http.StatusBadGateway),
-// 			Close:      true,
-// 			ProtoMajor: r.ProtoMajor,
-// 			ProtoMinor: r.ProtoMinor,
-// 			Body:       ioutil.NopCloser(bytes.NewBufferString("")),
-// 		}
-
-// 		resp.Write(clientConn)
-// 		clientConn.Close()
-// 		debug(999, "Proxy Dial Error:", err.Error(), r.RemoteAddr, proxy.Addr())
-// 		done <- true
-// 		return nil
-// 	}
-// 	destConn := &netutils.CounterConn{dc, 0, 0}
-
-// 	go func() {
-// 		defer func() { done <- true }()
-// 		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
-// 		defer cancel()
-// 		nr := r.Clone(ctx)
-
-// 		if len(proxy.User) != 0 || len(proxy.Pass) != 0 {
-// 			basicAuth := "Basic " + base64.StdEncoding.EncodeToString([]byte(proxy.Auth()))
-// 			nr.Header.Set("Proxy-Authorization", basicAuth)
-// 		} else {
-// 			nr.Header.Del("Proxy-Authorization")
-// 		}
-
-// 		reader := bufio.NewReader(destConn)
-
-// 		// Write the Request to the Upstream Proxy
-// 		nr.WriteProxy(destConn)
-
-// 		resp, err := http.ReadResponse(reader, nr)
-
-// 		if err != nil {
-// 			resp := &http.Response{
-// 				StatusCode: http.StatusServiceUnavailable,
-// 				Status:     http.StatusText(http.StatusServiceUnavailable),
-// 				Close:      true,
-// 				ProtoMajor: r.ProtoMajor,
-// 				ProtoMinor: r.ProtoMinor,
-// 				Body:       ioutil.NopCloser(bytes.NewBufferString("")),
-// 			}
-
-// 			resp.Write(clientConn)
-
-// 			debug(99, "Upstream read Error:", r.RemoteAddr, err.Error())
-// 			if resp != nil && resp.Header != nil {
-// 				debug(999, spew.Sdump(resp.Header))
-// 			}
-// 			return
-// 		}
-
-// 		if resp.Header.Get("Proxy-Agent") != "" {
-// 			resp.Header.Del("Proxy-Agent")
-// 			resp.Header.Set("X-Proxy-Agent", Co.ProxyAgent)
-// 		}
-
-// 		if r.Method == http.MethodConnect {
-// 			resp.Header.Set("X-Proxy-Agent", Co.ProxyAgent)
-
-// 			// if proxy error, bail with a generic bad gateway
-// 			if resp.StatusCode != 200 {
-// 				resp.StatusCode = http.StatusBadGateway
-// 				resp.Status = http.StatusText(http.StatusBadGateway)
-// 				resp.Write(clientConn)
-// 				clientConn.Close()
-// 				return
-// 			}
-
-// 			// if we don't close the body, write will just hang
-// 			resp.Body.Close()
-// 			resp.Write(clientConn)
-
-// 			// pipe content
-// 			go transfer(destConn, clientConn)
-// 			transfer(clientConn, destConn)
-
-// 		} else {
-// 			resp.Write(clientConn)
-
-// 			// if we don't have a content-length set, it won't automatically close
-// 			if resp.ContentLength == -1 {
-// 				clientConn.Close()
-// 			}
-// 		}
-// 	}()
-// 	return destConn
-// }
-
-// func forwardSocks(proxy *ProxyInfo, r *http.Request, clientConn net.Conn, done chan bool) *netutils.CounterConn {
-
-// 	cl := socks5.Client{
-// 		Auth: &netutils.UserInfo{
-// 			User: proxy.User,
-// 			Pass: proxy.Pass,
-// 		},
-// 		Timeout: 2 * time.Second,
-// 	}
-// 	destConn, err := cl.Open(proxy.Addr())
-// 	if err != nil {
-// 		debug(999, "Failed upstream socks", err)
-// 		done <- true
-// 		return nil
-// 	}
-
-// 	go func() {
-// 		defer func() { done <- true }()
-
-// 		hst, port := netutils.GetHostPort(r)
-// 		err = destConn.Connect(hst, port)
-// 		if err != nil {
-// 			debug(999, "Failed upstream socks[connect]", err)
-// 			return
-// 		}
-
-// 		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
-// 		defer cancel()
-// 		nr := r.Clone(ctx)
-
-// 		if len(proxy.User) != 0 || len(proxy.Pass) != 0 {
-// 			basicAuth := "Basic " + base64.StdEncoding.EncodeToString([]byte(proxy.Auth()))
-// 			nr.Header.Set("Proxy-Authorization", basicAuth)
-// 		} else {
-// 			nr.Header.Del("Proxy-Authorization")
-// 		}
-
-// 		// reader := bufio.NewReader(destConn)
-// 		// Write the Request to the Upstream Proxy
-// 		nr.WriteProxy(destConn)
-// 		go func() {
-// 			io.Copy(destConn, clientConn)
-// 			destConn.Close()
-// 			clientConn.Close()
-// 		}()
-// 		io.Copy(clientConn, destConn)
-// 		destConn.Close()
-// 		clientConn.Close()
-// 	}()
-// 	return destConn.Conn.(*netutils.CounterConn)
-// }
-
 // IsExpired returns true if ExireAt is true and is in the past
 func (s *Server) IsExpired() bool {
 	if s.ExpireAt == nil {
@@ -673,51 +355,104 @@ func (s *Server) IsExpired() bool {
 	}
 	return false
 }
+func (s *Server) GetProxyAndTunnel(uinfo *netutils.UserInfo, m map[string]string, host string, port int) (net.Conn, *ProxyInfo, error) {
+
+	proxy, err := s.SelectProxy(uinfo, m)
+
+	if proxy == nil || err != nil {
+		return nil, nil, errors.New("Proxy Offline")
+	}
+
+	tunnel, err := proxy.GetTunnel(host, port)
+	return tunnel, proxy, err
+
+}
 
 // SelectProxy finds a matching proxy for this request
 func (s *Server) SelectProxy(uinfo *netutils.UserInfo, m map[string]string) (*ProxyInfo, error) {
 
 	var proxyP *ProxyInfo
 
-	m["Group"] = "Default"
+	if s.DefaultGroup != nil {
+		m["Group"] = *s.DefaultGroup
+	} else {
+		m["Group"] = "Default"
+	}
 
 	// parses only the group to select the right proxy
 	ParseProxyParams(&m, true)
 
 	m["Group"] = strings.ToUpper(m["Group"])
 
-	if s.Devices != nil {
-		// if requested specific device
-		d, ok := m["device"]
-		if !ok {
-			for v := range s.Devices {
-				d = v
-				break
-			}
-			m["device"] = d
-		}
-		proxyP = getDynamicProxy(d)
+	saveSession := false
 
-		if proxyP == nil {
-			return nil, errors.New("No such proxy")
-		}
-	} else if v, ok := m["sticky"]; ok { // IF sticky ip requested, get the same proxy
-		key := uinfo.User + "::" + v
-
-		// log.Println("get", key)
+	key := ""
+	// Are we under sticky conditions?
+	if v, ok := m["sticky"]; ok {
+		key = uinfo.User + "::" + v
 		proxyP = SessionMaster.GetSession(key)
-		if proxyP == nil {
-			// log.Println("set", key)
-			proxyP = GetRandomProxy(m["Group"])
-			SessionMaster.SetSession(key, proxyP)
+		if proxyP != nil {
+			proxyP.Connect()
+		} else {
+			saveSession = true
 		}
-	} else {
-		// log.Println("random proxy")
-		proxyP = GetRandomProxy(m["Group"])
 	}
 
+	// we don't have a sticky proxy
+	if proxyP == nil {
+
+		// do we have a dedicated device array?
+		if s.Devices != nil {
+			// if requested specific device
+			d, ok := m["device"]
+			if !ok {
+
+				// select a truly random key from the device slice
+				d = s.DeviceSlice[rand.Intn(len(s.DeviceSlice))]
+
+				m["device"] = d
+			}
+			typ, ok := s.Devices[d]
+			if !ok {
+				return nil, errors.New("No such proxy")
+			}
+			proxyP = getDynamicProxy(d, typ)
+
+			if proxyP == nil {
+				return nil, errors.New("No such proxy")
+			}
+
+			// static proxies do not use the accelerator ( pooled connections )
+			// TODO: we could start to pool for a while during periods of activity
+			proxyP.Connect()
+
+		} else { // we're running on the public pool
+
+			proxyP = GetRandomProxy(m["Group"])
+		}
+		// else if v, ok := m["sticky"]; ok { // IF sticky ip requested, get the same proxy
+		// 	key := uinfo.User + "::" + v
+
+		// 	proxyP = SessionMaster.GetSession(key)
+		// 	if proxyP == nil {
+		// 		// log.Println("set", key)
+		// 		proxyP = GetRandomProxy(m["Group"])
+
+		// 		// we're storing a cloned pi because we'll edit this one
+		// 		SessionMaster.SetSession(key, proxyP.Clone())
+		// 	} else {
+		// 		// proxy pooling is disabled for sticky ips
+		// 		// this is because it would be a nightmare to actually implement
+		// 		proxyP.Connect()
+		// 	}
+	}
 	if proxyP == nil {
 		return nil, errors.New("Could not find proxy")
+	}
+
+	// we're under sticky so we save it
+	if saveSession {
+		SessionMaster.SetSession(key, proxyP.Clone())
 	}
 
 	m["User"] = proxyP.User
@@ -725,24 +460,52 @@ func (s *Server) SelectProxy(uinfo *netutils.UserInfo, m map[string]string) (*Pr
 
 	// parse the rest too
 	ParseProxyParams(&m, false)
+	proxyP.User = m["User"]
+	proxyP.Pass = m["Pass"]
 
-	proxy := &ProxyInfo{
-		Host: proxyP.Host,
-		Port: proxyP.Port,
-		User: m["User"],
-		Pass: m["Pass"],
-		Type: proxyP.Type,
-	}
-
-	return proxy, nil
+	return proxyP, nil
 }
 
 // RunAccountant manages bandwidth counting
+// bandwidth counting could theoreticaly break at:
+// 1. Connection not set as CounterConn ✅
+// 2. Accountant does not run on connection ✅
+// 3.
 func (s *Server) RunAccountant(tp string, downstream net.Conn, upstream net.Conn) {
+
+	// if Co.DebugLevel > 99 {
+	// 	str := reflect.TypeOf(downstream).String()
+	// 	if str != "*netutils.CounterConn" {
+	// 		reportError("RunAccountant downstream not *netutils.CounterConn but" + str)
+	// 	}
+	// 	str = reflect.TypeOf(upstream).String()
+	// 	if str != "*netutils.CounterConn" {
+	// 		reportError("RunAccountant upstream not *netutils.CounterConn but" + str)
+	// 	}
+	// }
+
+	us := upstream.(*netutils.CounterConn)
+
+	// h2c connections don't really have a net.Conn as downstream
+	// so we only take into account the amount of bandwidth that we send to the upstream
+	// proxies
+	if downstream == nil {
+		us.Downstream = us.Downstream * Co.BandwidthCounterOverflowPerMille / 1000
+		us.Upstream = us.Upstream * Co.BandwidthCounterOverflowPerMille / 1000
+		s.LogConnection(s.Addr, tp, us.Downstream, us.Upstream)
+		s.Consume(us.Downstream, us.Upstream)
+		us.Upstream = -1
+		us.Downstream = -1
+		return
+	}
 
 	ds := downstream.(*netutils.CounterConn)
 
-	us := upstream.(*netutils.CounterConn)
+	us.Downstream = us.Downstream * Co.BandwidthCounterOverflowPerMille / 1000
+	us.Upstream = us.Upstream * Co.BandwidthCounterOverflowPerMille / 1000
+
+	ds.Downstream = ds.Downstream * Co.BandwidthCounterOverflowPerMille / 1000
+	ds.Upstream = ds.Upstream * Co.BandwidthCounterOverflowPerMille / 1000
 
 	if us.Upstream+us.Downstream > ds.Upstream+ds.Downstream {
 		s.LogConnection(s.Addr, tp, us.Downstream, us.Upstream)
@@ -751,10 +514,14 @@ func (s *Server) RunAccountant(tp string, downstream net.Conn, upstream net.Conn
 		s.LogConnection(s.Addr, tp, ds.Downstream, ds.Upstream)
 		s.Consume(ds.Downstream, ds.Upstream)
 	}
+	ds.Upstream = -1
+	ds.Downstream = -1
+	us.Upstream = -1
+	us.Downstream = -1
 }
 
 // RunPiper pipes data between upstream and downstream and closes one when the other closes
-func (s *Server) RunPiper(downstream net.Conn, upstream net.Conn) {
+func (s *Server) RunPiper(downstream io.ReadWriteCloser, upstream io.ReadWriteCloser) {
 
 	// pipe content
 	go transfer(downstream, upstream)
@@ -766,6 +533,7 @@ func transfer(destination io.WriteCloser, source io.ReadCloser) {
 	defer destination.Close()
 	defer source.Close()
 	io.Copy(destination, source)
+	utils.Debug(999, "Closing sockets")
 }
 
 // CheckAuth checks if the provided user information (user, password, ip) matches
@@ -773,7 +541,7 @@ func transfer(destination io.WriteCloser, source io.ReadCloser) {
 func (s *Server) CheckAuth(uinfo *netutils.UserInfo, ip string) error {
 	if s.Auth.Type == AuthTypeUserPass {
 		if CheckUser(uinfo, s.Auth) == false {
-			debug(99, fmt.Sprintf("[Socks](%s)", s.Addr),
+			debug(99, fmt.Sprintf("[ALL](%s)", s.Addr),
 				"Wrong User/Pass Combination:",
 				"\n\tActual:", uinfo.User, uinfo.Pass,
 				"\n\tExpected", s.Auth.User, s.Auth.Pass)
@@ -782,7 +550,7 @@ func (s *Server) CheckAuth(uinfo *netutils.UserInfo, ip string) error {
 		}
 	} else {
 		if val, ok := s.Auth.IP[ip]; !ok || val == false {
-			debug(999, fmt.Sprintf("[Socks](%s) IP not allowed: %s", s.Addr, ip))
+			debug(999, fmt.Sprintf("[ALL](%s) IP not allowed: %s", s.Addr, ip))
 
 			return errors.New("IP not allowed")
 		}

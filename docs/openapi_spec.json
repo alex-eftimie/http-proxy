@@ -1,0 +1,258 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "2.0.0",
+        "title": "Proxy",
+        "license": {
+            "name": "MIT"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:65001"
+        }
+    ],
+    "paths": {
+        "/server": {
+            "put": {
+                "summary": "Add a new server",
+                "operationId": "addServer",
+                "tags": [
+                    "server"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateServer"
+                            },
+                            "examples": {
+                                "CreateServer": {
+                                    "description": "test",
+                                    "value": {
+                                        "Email": "john@doe.com",
+                                        "Bandwidth": "10.23 GB"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Details about the created server",
+                        "headers": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateServer"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "headers": {
+                            "X-Error": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": [
+                                        "Blank Email",
+                                        "Error reading request body"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/badOrMissingToken"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/onlyAdmin"
+                    },
+                    "500": {
+                        "description": "Failed to provision proxy",
+                        "headers": {
+                            "X-Error": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "The error that was encountered"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "responses": {
+            "badOrMissingToken": {
+                "description": "Response sent when trying to call the api without a token or the wrong one",
+                "headers": {
+                    "X-Error": {
+                        "schema": {
+                            "type": "string",
+                            "example": [
+                                "Only Authorization: Bearer Allowed",
+                                "Bad Token or Server Not Found"
+                            ]
+                        }
+                    }
+                }
+            },
+            "onlyAdmin": {
+                "description": "Standart response when trying to call a privileged API with a non-priviledged account",
+                "headers": {
+                    "X-Error": {
+                        "schema": {
+                            "type": "string",
+                            "example": "Clients are not allowed to do that"
+                        }
+                    }
+                }
+            }
+        },
+        "schemas": {
+            "bandwidth": {
+                "type": "string",
+                "example": "10.23 PB",
+                "nullable": true
+            },
+            "time": {
+                "type": "string",
+                "example": "2006-01-02 15:04:05",
+                "nullable": true
+            },
+            "duration": {
+                "type": "string",
+                "example": "102h50m10s",
+                "nullable": true
+            },
+            "CreateServer": {
+                "type": "object",
+                "properties": {
+                    "AuthToken": {
+                        "type": "string",
+                        "example": "NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf"
+                    },
+                    "Email": {
+                        "description": "Email of the new proxy owner",
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@doe.com"
+                    },
+                    "Username": {
+                        "type": "string",
+                        "default": "john+doe.com"
+                    },
+                    "Password": {
+                        "description": "The password to use, randomly generated if missing",
+                        "type": "string",
+                        "format": "password"
+                    },
+                    "Host": {
+                        "description": "Ignored, set by server",
+                        "type": "string",
+                        "example": "127.0.0.1"
+                    },
+                    "Port": {
+                        "description": "Ignored, set by server",
+                        "type": "integer",
+                        "example": 999
+                    },
+                    "ID": {
+                        "type": "string"
+                    },
+                    "Bandwidth": {
+                        "$ref": "#/components/schemas/bandwidth"
+                    },
+                    "MaxThreads": {
+                        "type": "integer",
+                        "nullable": true,
+                        "default": null
+                    },
+                    "MaxIPs": {
+                        "type": "integer",
+                        "nullable": true,
+                        "default": null
+                    },
+                    "Time": {
+                        "$ref": "#/components/schemas/duration"
+                    },
+                    "ExpireAt": {
+                        "$ref": "#/components/schemas/time"
+                    },
+                    "Devices": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "boolean"
+                        },
+                        "nullable": true,
+                        "default": null
+                    }
+                },
+                "required": [
+                    "Email"
+                ]
+            },
+            "Server": {
+                "type": "object",
+                "required": [
+                    "ID"
+                ],
+                "properties": {
+                    "ID": {
+                        "type": "string"
+                    }
+                }
+            },
+            "User": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "tag": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Error": {
+                "type": "object",
+                "required": [
+                    "code",
+                    "message"
+                ],
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "BasicAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        {
+            "BasicAuth": []
+        }
+    ]
+}

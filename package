@@ -1,9 +1,13 @@
 #!/bin/bash -x
 DIR=./app
 rm -Rvf $DIR
+rm confignginx.*
+
 mkdir $DIR
-env GOOS=darwin GOARCH=amd64 go build -o $DIR/http-proxy.mac src/*.go
+# env GOOS=darwin GOARCH=amd64 go build -o $DIR/http-proxy.mac src/*.go
 env GOOS=linux GOARCH=amd64 go build -o $DIR/http-proxy.linux src/*.go
+make confignginx.linux
+mv confignginx.* $DIR/
 
 cp -R docs $DIR/
 mkdir $DIR/cache

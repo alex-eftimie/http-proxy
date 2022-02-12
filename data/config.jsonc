@@ -1,0 +1,88 @@
+{
+	"AuthToken": "NOpyVnMKhI4680dxQjdGX6jtUIKq3od3UlQXcQDVrRkCCDuiv2gzDs7ryniuffgwmJO1IqGf",
+	"DebugLevel": 9998,
+	"BindAddr": ":65001",
+	"ServerIP": "127.0.0.1",
+	"JugglerAuthToken": "X6jtUIKq3I4680dxQDVrRnMKhI4680dxQjdGX6jtUI",
+	"JugglerAddr": "157.230.234.171:9999",
+	"BandwidthUpdateInterval": 15,
+	"BandwidthCounterOverflowPerMille": 11000000,
+	"ReadWriteTimeout": 60,
+	"SessionTimeout": 300, // in seconds
+	"MaxPreConnections": 100,
+	"MinPreConnections": 10,
+	"AllowProxyProtocolFrom": [
+		"127.0.0.1"
+	],
+	"Events": {
+		".*": "bash -c \"/Users/alex/golang/src/github.com/alex-eftimie/http-proxy/confignginx $1 192.168.1.128 /usr/local/etc/nginx/streams/testproxy.conf 'sudo nginx -s reload'\""
+	},
+	"Proxies": {
+		"DEFAULT": [
+			"socks5://7ab43623e3c2:a76e72a879@31.131.11.208:12323"
+		],
+		"US": [
+			"alexeftimie:tTzmG0lgVj5HT7fY_country-UnitedStates@proxy.packetstream.io:31112",
+			"alexeftimie:tTzmG0lgVj5HT7fY_country-UnitedStates@proxy.packetstream.io:31112",
+			"alexeftimie:tTzmG0lgVj5HT7fY_country-UnitedStates@proxy.packetstream.io:31112",
+			"alexeftimie:tTzmG0lgVj5HT7fY_country-UnitedStates@proxy.packetstream.io:31112",
+			"alexeftimie:tTzmG0lgVj5HT7fY_country-UnitedStates@proxy.packetstream.io:31112"
+		],
+		"CA": [
+			"alexeftimie:tTzmG0lgVj5HT7fY_country-Canada_a-1@proxy.packetstream.io:31112",
+			"alexeftimie:tTzmG0lgVj5HT7fY_country-Canada_a-2@proxy.packetstream.io:31112",
+			"alexeftimie:tTzmG0lgVj5HT7fY_country-Canada_a-3@proxy.packetstream.io:31112",
+			"alexeftimie:tTzmG0lgVj5HT7fY_country-Canada_a-4@proxy.packetstream.io:31112",
+			"alexeftimie:tTzmG0lgVj5HT7fY_country-Canada_a-5@proxy.packetstream.io:31112"
+		],
+		"TEST": [
+			"http://7ab43623e3c2:a76e72a879@31.131.11.208:12323",
+			"http://7ab43623e3c2:a76e72a879@31.131.8.97:12323",
+			"http://7ab43623e3c2:a76e72a879@31.131.9.76:12323",
+			"http://7ab43623e3c2:a76e72a879@31.131.10.188:12323",
+			"http://7ab43623e3c2:a76e72a879@31.131.8.196:12334"
+		]
+	},
+	"ProxyAgent": "My Awesome Proxy",
+	"info_LogRequestsLevel": {
+		"0": "disabled",
+		"1": "output to console",
+		"2": "output to console and log file"
+	},
+	"LogRequestsLevel": 2,
+	"info_LogParserSortKey": {
+		"description": "sets how the log parser sorts domains, the parser always sorts Highest->Lowest",
+		"0": "by connection count",
+		"1": "by upload bytes",
+		"2": "by download bytes",
+		"3": "by upload+download"
+	},
+	"LogParserSortKey": 3,
+	"DomainMapping": {
+		"google.com": [
+			"gstatic.com",
+			"googleapis.com",
+			"google-analytics.com",
+			"doubleclick.net",
+			"googletagmanager.com",
+			"ggpht.com",
+			"googlesyndication.com",
+			"googleusercontent.com",
+			"googletagservices.com",
+			"googleadservices.com"
+		],
+		"facebook.com": [
+			"fbcdn.net"
+		],
+		"youtube.com": [
+			"ytimg.com"
+		],
+		"github.com": [
+			"githubusercontent.com",
+			"github.io"
+		],
+		"whatsapp.com": [
+			"whatsapp.net"
+		]
+	}
+}

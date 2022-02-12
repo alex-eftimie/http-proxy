@@ -9,24 +9,12 @@ import (
 	"strings"
 	"time"
 
-	apicontroller "github.com/Alex-Eftimie/api-controller"
+	apiconfig "github.com/alex-eftimie/api-config"
+	apicontroller "github.com/alex-eftimie/api-controller"
+	"github.com/alex-eftimie/netutils"
+	"github.com/alex-eftimie/utils"
 	"github.com/sethvargo/go-password/password"
 )
-
-type apiCreateServer struct {
-	AuthToken  string
-	Email      string
-	Username   string
-	Password   string
-	Host       string
-	Port       int
-	ID         string
-	Bandwidth  *string
-	MaxThreads *int
-	MaxIPs     *int
-	Time       *Duration
-	ExpireAt   *PTime
-}
 
 func manageServers() {
 	C.AddHandler("/server", putServer, "PUT")
@@ -56,7 +44,19 @@ func getServer(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	x, _ := ctx.Value(apicontroller.KeyAuthID).(*APIAuth)
 	x.Server.Lock()
-	bytes, _ := json.Marshal(x.Server)
+	var bytes []byte
+
+	// if we are admin we copy the whole struct
+	bytes, _ = json.Marshal(x.Server)
+
+	// if we are not admin, then we skip sensitive parts
+	// like the devices
+	if !x.Admin {
+		stripped := Server{}
+		json.Unmarshal(bytes, &stripped)
+		stripped.Devices = nil
+		bytes, _ = json.Marshal(&stripped)
+	}
 	x.Server.Unlock()
 	w.Header().Add("Content-Type", "application/json")
 	w.Write(bytes)
@@ -78,7 +78,7 @@ func putServer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	u := &apiCreateServer{}
+	u := &netutils.ApiCreateServer{}
 	json.Unmarshal(buf, u)
 	if u.Email == "" {
 		w.Header().Set("X-Error", "Blank Email")
@@ -86,7 +86,11 @@ func putServer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	u.Username = strings.Replace(u.Email, "@", "+", -1)
+	// if username is blank, then convert email to username
+	if u.Username == "" {
+		u.Username = strings.Replace(u.Email, "@", "+", -1)
+	}
+
 	if u.Password == "" {
 		res, err := password.Generate(16, 6, 0, false, false)
 		if err != nil {
@@ -98,12 +102,12 @@ func putServer(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if u.AuthToken == "" {
-		token := RandStringBytes(63)
+		token := utils.RandStringBytes(63)
 		u.AuthToken = token
 	}
 
 	if u.ID == "" {
-		serverID := RandStringBytes(15)
+		serverID := utils.RandStringBytes(15)
 		u.ID = serverID
 	}
 
@@ -115,17 +119,19 @@ func putServer(w http.ResponseWriter, r *http.Request) {
 			Readable: *u.Bandwidth,
 		}
 	}
-	var expireAt *PTime = nil
+	var expireAt *utils.Time = nil
 	if u.Time != nil {
 
-		expireAt = &PTime{time.Now().Add(u.Time.Duration)}
+		expireAt = &utils.Time{Time: time.Now().UTC().Add(u.Time.Duration)}
 		u.ExpireAt = expireAt
 	}
 	Ca.Lock()
 
 	u.Host = Co.ServerIP
-	u.Port = Ca.ServerPort
-	Ca.ServerPort++
+	if u.Port == 0 {
+		u.Port = Ca.ServerPort
+		Ca.ServerPort++
+	}
 	typ := "UserPass"
 
 	if u.MaxIPs != nil {
@@ -148,6 +154,7 @@ func putServer(w http.ResponseWriter, r *http.Request) {
 		MaxThreads: u.MaxThreads,
 		MaxIPs:     u.MaxIPs,
 		ExpireAt:   expireAt,
+		Devices:    u.Devices,
 	}
 	Ca.Unlock()
 
@@ -164,6 +171,8 @@ func putServer(w http.ResponseWriter, r *http.Request) {
 	bytes, _ := json.Marshal(u)
 	w.Header().Add("Content-Type", "application/json")
 	w.Write(bytes)
+	apiconfig.Sync(Ca)
+	event("ServersChanged")
 }
 
 func deleteServer(w http.ResponseWriter, r *http.Request) {
@@ -200,4 +209,6 @@ func deleteServer(w http.ResponseWriter, r *http.Request) {
 	delete(Ca.ServerMap, s.Addr)
 
 	Ca.Unlock()
+	apiconfig.Sync(Ca)
+	event("ServersChanged")
 }

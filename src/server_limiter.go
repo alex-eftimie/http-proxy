@@ -3,7 +3,7 @@ package main
 import (
 	"sync"
 
-	"github.com/Alex-Eftimie/utils"
+	"github.com/alex-eftimie/utils"
 )
 
 // ServerLimiter performs connections / thread limiting

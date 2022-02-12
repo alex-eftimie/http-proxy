@@ -6,7 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	apicontroller "github.com/Alex-Eftimie/api-controller"
+	apicontroller "github.com/alex-eftimie/api-controller"
+	"github.com/alex-eftimie/utils"
 )
 
 func manageTime() {
@@ -52,10 +53,10 @@ func putTime(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type resp struct {
-		ExpireAt *PTime
+		ExpireAt *utils.Time
 	}
 	type dur struct {
-		Time *Duration
+		Time *utils.Duration
 	}
 
 	d := &dur{}
@@ -84,10 +85,10 @@ func putTime(w http.ResponseWriter, r *http.Request) {
 		s.parent.Lock()
 		s.Lock()
 
-		if add && s.ExpireAt != nil {
-			s.ExpireAt = &PTime{s.ExpireAt.Add(d.Time.Duration)}
+		if add && s.ExpireAt != nil && s.ExpireAt.After(time.Now()) {
+			s.ExpireAt = &utils.Time{s.ExpireAt.Add(d.Time.Duration)}
 		} else {
-			s.ExpireAt = &PTime{time.Now().Add(d.Time.Duration)}
+			s.ExpireAt = &utils.Time{time.Now().Add(d.Time.Duration)}
 		}
 		nb = &resp{
 			ExpireAt: s.ExpireAt,

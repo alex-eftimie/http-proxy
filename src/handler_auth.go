@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"regexp"
 
-	apicontroller "github.com/Alex-Eftimie/api-controller"
+	apicontroller "github.com/alex-eftimie/api-controller"
 )
 
-var userPassRegex = regexp.MustCompile("^[a-z0-9A-Z\\.\\+]+$")
+var userPassRegex = regexp.MustCompile("^[a-z0-9A-Z\\.\\+]*$")
 
 func manageAuth() {
 	C.AddHandler("/auth/{serverID:[a-zA-Z0-9]+}", putAuth, "PUT")
@@ -70,6 +70,18 @@ func putAuth(w http.ResponseWriter, r *http.Request) {
 
 	s.parent.Lock()
 	s.Lock()
+
+	if newAuth.AuthToken == "" {
+		newAuth.AuthToken = s.Auth.AuthToken
+	}
+
+	if newAuth.User == "" {
+		newAuth.User = s.Auth.User
+	}
+
+	if newAuth.Pass == "" {
+		newAuth.Pass = s.Auth.Pass
+	}
 
 	if newAuth.AuthToken != s.Auth.AuthToken {
 		if !x.Admin {
